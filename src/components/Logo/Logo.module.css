@@ -1,0 +1,23 @@
+.logo__wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.logo__box {
+  width: 36px;
+  height: 36px;
+  background-color: #5b61e5; 
+  border-radius: 10px; 
+  flex-shrink: 0; 
+}
+
+.logo__title {
+  font-family: sans-serif;
+  font-size: 18px;
+  font-weight: 700; 
+  color: #1a1a1a; 
+  line-height: 1;
+}
