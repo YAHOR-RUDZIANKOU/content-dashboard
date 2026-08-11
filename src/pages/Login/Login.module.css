@@ -9,7 +9,7 @@
 
 .modal__wrapper {
   padding: 20px;
-  max-width: 500px;
+  max-width: 450px;
   width: 100%;
   background-color: white;
   border-radius: 15px;
@@ -42,15 +42,31 @@
   gap: 25px;
 }
 
-
-
-
-
-
-
-
 .static__wrapper {
   display: flex;
   flex-direction: column;
   gap: 3px;
+}
+
+.error__wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  margin-top: 20px;
+  background-color: #fff1f0;
+  color: #a83c3c;
+  padding: 10px;
+  border-radius: 7px;
+}
+
+.error__icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  border-radius: 25px;
+}
+
+.error__text {
+  line-height: 1.1;
 }

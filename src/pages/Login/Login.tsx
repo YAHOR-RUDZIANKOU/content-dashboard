@@ -3,12 +3,16 @@ import Input from "../../components/UI/Input/Input";
 import Button from "../../components/UI/Button/Button";
 import { useState } from "react";
 import { loginThunk } from "../../store/slices/authSlice";
-import { useAppDispatch } from "../../store/index";
+import { useAppDispatch, useAppSelector } from "../../store/index";
+import { motion, AnimatePresence } from "framer-motion";
+import { clearError } from "../../store/slices/authSlice";
+
 const Login = () => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const [description, setDescription] = useState("");
   const [emailError, setEmailError] = useState<string | null>(null);
-  const dispatch = useAppDispatch(); 
+  const dispatch = useAppDispatch();
+  const { status, error } = useAppSelector((state) => state.auth);
 
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,11 +26,12 @@ const Login = () => {
       return;
     }
     setEmailError(null);
-    dispatch(loginThunk({description}))
+    dispatch(loginThunk({ description }));
   };
 
   const handleInputFocus = () => {
     setEmailError(null);
+    dispatch(clearError());
   };
   return (
     <div className={classes.wrapper}>
@@ -57,10 +62,32 @@ const Login = () => {
               <div className={classes.email__error}>{emailError}</div>
             )}
           </label>
-          <Button type="submit" variant="primary" size="lg">
-            Войти
+          <Button
+            disabled={status === "loading"}
+            type="submit"
+            variant="primary"
+            size="lg"
+            isLoading={status === "loading"}
+          >
+            <span>Войти</span>
           </Button>
         </form>
+        <AnimatePresence>
+          {error && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              style={{ overflow: "hidden" }}
+            >
+              <div className={classes.error__wrapper}>
+                <div className={classes.error__icon}></div>
+                <div className={classes.error__text}>{error}</div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

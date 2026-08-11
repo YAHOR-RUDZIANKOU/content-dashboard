@@ -23,7 +23,11 @@ const initialState: initialType = {
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    clearError(state) {
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(loginThunk.pending, (state) => {
@@ -44,18 +48,25 @@ const authSlice = createSlice({
   },
 });
 
+export const { clearError } = authSlice.actions;
 export default authSlice.reducer;
 
 export const loginThunk = createAsyncThunk(
   "auth/login",
   async ({ description }: checkEmail, thunkAPI) => {
     try {
-      await new Promise<void>((res) => setTimeout(() => res(), 1500));
+      await new Promise<void>((res) => setTimeout(() => res(), 4000));
       const data = (
-        await axios.get<User[]>("https://jsonplaceholder.typicode.com/users")
+        await axios.get<User[]>(
+          "https://jsonplaceholder.typicode.com/users",
+        )
       ).data;
       const foundUser = data.find((value) => value.email === description);
-      return foundUser ? foundUser : thunkAPI.rejectWithValue("Неверный Email");
+      return foundUser
+        ? foundUser
+        : thunkAPI.rejectWithValue(
+            " Пользователь не найден. Попробуйте другой email из списка.",
+          );
     } catch (e: unknown) {
       const errorMessage =
         e instanceof Error ? e.message : "Неизвестная ошибка";
