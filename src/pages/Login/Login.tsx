@@ -2,10 +2,13 @@ import classes from "./Login.module.css";
 import Input from "../../components/UI/Input/Input";
 import Button from "../../components/UI/Button/Button";
 import { useState } from "react";
+import { loginThunk } from "../../store/slices/authSlice";
+import { useAppDispatch } from "../../store/index";
 const Login = () => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const [description, setDescription] = useState("");
   const [emailError, setEmailError] = useState<string | null>(null);
+  const dispatch = useAppDispatch(); 
 
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -19,7 +22,7 @@ const Login = () => {
       return;
     }
     setEmailError(null);
-    console.log("это маил, все хорошо");
+    dispatch(loginThunk({description}))
   };
 
   const handleInputFocus = () => {
