@@ -1,0 +1,64 @@
+.sidebar__wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  height: 100vh;
+  max-width: 250px;
+  width: 100%;
+  padding: 20px 10px;
+}
+
+.nav__wrapper {
+  flex-grow: 1;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #7a7a7a;
+  padding: 7px;
+  border-radius: 10px;
+}
+
+.item__logo {
+  width: 18px;
+  height: 18px;
+  border-radius: 7px;
+  background-color: #7a7a7a;
+}
+
+.item__active {
+  color: #5b61e5;
+  background-color: #f3f3ff;
+}
+
+.item__active .item__logo {
+  background-color: #5b61e5;
+}
+
+.auth__text {
+  line-height: 1.1;
+}
+
+.auth__subtitle {
+  font-size: 14px;
+  color: #7a7a7a;
+}
+
+.auth__inform {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.auth__logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 35px;
+  height: 35px;
+  color: #5b61e5;
+  background-color: #f3f3ff;
+  border-radius: 50%;
+}
