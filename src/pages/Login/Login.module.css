@@ -70,3 +70,11 @@
 .error__text {
   line-height: 1.1;
 }
+
+.authBlock {
+  max-width: 450px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
