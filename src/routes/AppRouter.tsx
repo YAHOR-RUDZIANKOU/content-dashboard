@@ -3,6 +3,7 @@ import Login from "../pages/Login/Login";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import PublicRoute from "../routes/PublicRoute";
 import ProtectedRoute from "./ProtectedRoute";
+import MainLayout from "../components/layout/MainLayout";
 const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -19,10 +20,12 @@ const AppRouter = () => {
           path="/"
           element={
             <ProtectedRoute>
-              <Dashboard />
+              <MainLayout />
             </ProtectedRoute>
           }
-        />
+        >
+          <Route index element={<Dashboard />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

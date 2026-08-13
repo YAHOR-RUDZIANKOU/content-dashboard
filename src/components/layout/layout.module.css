@@ -1,0 +1,11 @@
+.pageContainer {
+  display: flex;
+}
+
+.navBar {
+  flex-shrink: 0;
+}
+
+.content {
+  flex-grow: 1;
+}
