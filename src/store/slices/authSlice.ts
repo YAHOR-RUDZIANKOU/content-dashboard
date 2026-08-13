@@ -2,6 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { User } from "../../types/user";
 import axios from "axios";
 
+const savedUser = localStorage.getItem("user");
+
 type checkEmail = {
   description: string;
 };
@@ -14,9 +16,9 @@ type initialType = {
 };
 
 const initialState: initialType = {
-  isAuth: false,
-  user: null,
-  status: "idle",
+  isAuth: localStorage.getItem("user") ? true : false,
+  user: savedUser ? JSON.parse(savedUser) : null,
+  status: localStorage.getItem("user") ? "succeeded" : "idle",
   error: null,
 };
 
@@ -26,6 +28,13 @@ const authSlice = createSlice({
   reducers: {
     clearError(state) {
       state.error = null;
+    },
+    logout(state) {
+      state.isAuth = false;
+      state.user = null;
+      state.status = "idle";
+      state.error = null;
+      localStorage.removeItem("user");
     },
   },
   extraReducers: (builder) => {
@@ -39,6 +48,7 @@ const authSlice = createSlice({
         state.isAuth = true;
         state.user = action.payload;
         state.status = "succeeded";
+        localStorage.setItem("user", JSON.stringify(action.payload));
       })
 
       .addCase(loginThunk.rejected, (state, action) => {
@@ -48,18 +58,16 @@ const authSlice = createSlice({
   },
 });
 
-export const { clearError } = authSlice.actions;
+export const { clearError, logout } = authSlice.actions;
 export default authSlice.reducer;
 
 export const loginThunk = createAsyncThunk(
   "auth/login",
   async ({ description }: checkEmail, thunkAPI) => {
     try {
-      await new Promise<void>((res) => setTimeout(() => res(), 4000));
+      await new Promise<void>((res) => setTimeout(() => res(), 1500));
       const data = (
-        await axios.get<User[]>(
-          "https://jsonplaceholder.typicode.com/users",
-        )
+        await axios.get<User[]>("https://jsonplaceholder.typicode.com/users")
       ).data;
       const foundUser = data.find((value) => value.email === description);
       return foundUser
