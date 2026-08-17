@@ -1,7 +1,37 @@
+.dashboard__wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 .header__container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
-  border-bottom: 1px solid #EAEAEA;
+  padding: 20px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.dashboard__main {
+  background-color: #f4f4f4;
+  padding: 30px 20px;
+  height: 100%;
+  flex-grow: 1;
+}
+
+.dashboard__title {
+  color: #1a1a1a;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dashboard__subtitle {
+  color: #707070;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.4;
 }
