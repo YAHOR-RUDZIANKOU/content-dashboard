@@ -4,6 +4,7 @@ import Dashboard from "../pages/Dashboard/Dashboard";
 import PublicRoute from "../routes/PublicRoute";
 import ProtectedRoute from "./ProtectedRoute";
 import MainLayout from "../components/layout/MainLayout";
+import Posts from "../pages/Posts/Posts";
 const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -25,6 +26,7 @@ const AppRouter = () => {
           }
         >
           <Route index element={<Dashboard />} />
+          <Route path="/posts" element={<Posts />} />
         </Route>
       </Routes>
     </BrowserRouter>

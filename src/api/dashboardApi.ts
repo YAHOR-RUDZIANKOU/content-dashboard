@@ -1,4 +1,4 @@
-import type { Post, Todo, Album, Photos } from "../types/dashboard";
+import type { Post, Todo, Album, Photos,Comments } from "../types/dashboard";
 import type { User } from "../types/user";
 import axios from "axios";
 const dashboardApi = {
@@ -12,6 +12,8 @@ const dashboardApi = {
     axios.get<User[]>("https://jsonplaceholder.typicode.com/users"),
   getPhotos: () =>
     axios.get<Photos[]>("https://jsonplaceholder.typicode.com/photos"),
+  getComments: () =>
+    axios.get<Comments[]>("https://jsonplaceholder.typicode.com/comments"),
 };
 
 export default dashboardApi;

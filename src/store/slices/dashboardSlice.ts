@@ -1,6 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import dashboardApi from "../../api/dashboardApi";
-import type { Post, Todo, Album, Photos } from "../../types/dashboard";
+import type {
+  Post,
+  Todo,
+  Album,
+  Photos,
+  Comments,
+} from "../../types/dashboard";
 import type { User } from "../../types/user";
 
 type DashboardData = {
@@ -9,6 +15,7 @@ type DashboardData = {
   albums: Album[];
   users: User[];
   photos: Photos[];
+  comments: Comments[];
 };
 
 type initialType = DashboardData & {
@@ -22,6 +29,7 @@ const initialState: initialType = {
   albums: [],
   users: [],
   photos: [],
+  comments: [],
   status: "idle",
   error: null,
 };
@@ -44,6 +52,7 @@ const dashboardSlice = createSlice({
         state.albums = action.payload.albums;
         state.users = action.payload.users;
         state.photos = action.payload.photos;
+        state.comments = action.payload.comments;
       })
 
       .addCase(dashboardThunk.rejected, (state, action) => {
@@ -61,13 +70,14 @@ export const dashboardThunk = createAsyncThunk<
   { rejectValue: string }
 >("dashboard/dash", async (_, thunkAPI) => {
   try {
-    const [postsRes, todosRes, albumsRes, usersRes, photoRes] =
+    const [postsRes, todosRes, albumsRes, usersRes, photoRes, commentsRes] =
       await Promise.all([
         dashboardApi.getPost(),
         dashboardApi.getTodos(),
         dashboardApi.getAlbum(),
         dashboardApi.getUsers(),
         dashboardApi.getPhotos(),
+        dashboardApi.getComments(),
       ]);
     return {
       post: postsRes.data,
@@ -75,6 +85,7 @@ export const dashboardThunk = createAsyncThunk<
       albums: albumsRes.data,
       users: usersRes.data,
       photos: photoRes.data,
+      comments: commentsRes.data,
     };
   } catch (e: unknown) {
     const errorMessage = e instanceof Error ? e.message : "Неизвестная ошибка";

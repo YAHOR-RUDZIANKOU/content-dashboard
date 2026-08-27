@@ -37,14 +37,10 @@ export const selectDashboard = createSelector(
       : `фотографий нет`;
 
     return {
-      postsTitle: usersPost.length,
-      subtitlePost,
-      todosTitle: usersTodos.length,
-      subtitleTodos,
-      albumsTitle: usersAlbums.length,
-      subtitleAlbums,
-      usersTitle: usersCount,
-      subtitleUsers,
+      posts: { title: usersPost.length, subtitle: subtitlePost },
+      todos: { title: usersTodos.length, subtitle: subtitleTodos },
+      albums: { title: usersAlbums.length, subtitle: subtitleAlbums },
+      users: { title: usersCount, subtitle: subtitleUsers },
     };
   },
 );
