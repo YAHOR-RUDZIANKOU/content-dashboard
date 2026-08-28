@@ -9,6 +9,7 @@ import RecentPost from "../../components/RecentPost/RecentPost";
 import KpiCardsList from "../../components/KpiCardsList/KpiCardsList";
 import RecentTodosList from "../../components/RecentTodosList/RecentTodosList";
 import KpiCardsSkeleton from "../../components/KpiCardsList/KpiCardsSkeleton";
+import SkeletonCard from "../../components/Skeleton/SkeletonCard/SkeletonCard"
 
 const getFirstName = (name: string) => {
   if (!name) return "";
@@ -47,8 +48,20 @@ const Dashboard = () => {
           {status === "loading" && <KpiCardsSkeleton />}
         </div>
         <div className={classes.dashboard__activity}>
-          <RecentPost />
-          <RecentTodosList />
+          {status === "succeeded" && (
+            <>
+              <RecentPost />
+              <RecentTodosList />
+            </>
+          )}
+          {
+            status==="loading" && (
+              <>
+              <SkeletonCard style={{ height: '23.75rem' }}/>
+              <SkeletonCard style={{ height: '23.75rem' }}/>
+              </>
+            )
+          }
         </div>
       </main>
     </div>
