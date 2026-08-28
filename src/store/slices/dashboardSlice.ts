@@ -70,6 +70,7 @@ export const dashboardThunk = createAsyncThunk<
   { rejectValue: string }
 >("dashboard/dash", async (_, thunkAPI) => {
   try {
+     await new Promise<void>((res) => setTimeout(() => res(), 1500));
     const [postsRes, todosRes, albumsRes, usersRes, photoRes, commentsRes] =
       await Promise.all([
         dashboardApi.getPost(),

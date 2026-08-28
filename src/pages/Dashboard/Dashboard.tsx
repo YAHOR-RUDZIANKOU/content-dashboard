@@ -7,7 +7,8 @@ import { useEffect } from "react";
 import { dashboardThunk } from "../../store/slices/dashboardSlice";
 import RecentPost from "../../components/RecentPost/RecentPost";
 import KpiCardsList from "../../components/KpiCardsList/KpiCardsList";
-import RecentTodosList from "../../components/RecentTodosList/RecentTodosList"
+import RecentTodosList from "../../components/RecentTodosList/RecentTodosList";
+import KpiCardsSkeleton from "../../components/KpiCardsList/KpiCardsSkeleton";
 
 const getFirstName = (name: string) => {
   if (!name) return "";
@@ -17,6 +18,7 @@ const getFirstName = (name: string) => {
 const Dashboard = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
+  const { status } = useAppSelector((state) => state.dashboard);
 
   useEffect(() => {
     dispatch(dashboardThunk());
@@ -41,11 +43,12 @@ const Dashboard = () => {
           Вот что происходит в вашем контенте сегодня.
         </div>
         <div className={classes.cards__wrapper}>
-          <KpiCardsList />
+          {status === "succeeded" && <KpiCardsList />}
+          {status === "loading" && <KpiCardsSkeleton />}
         </div>
         <div className={classes.dashboard__activity}>
           <RecentPost />
-          <RecentTodosList/>
+          <RecentTodosList />
         </div>
       </main>
     </div>
