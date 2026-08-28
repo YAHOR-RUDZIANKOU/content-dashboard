@@ -1,0 +1,48 @@
+.todos__wrapper {
+  border: 1px solid #eaeaea;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.todos__header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.todos__btn {
+  color: #5b61e5;
+}
+
+.todos__text {
+  font-weight: 500;
+}
+
+.todos__title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  word-break: keep-all;
+  overflow-wrap: normal;
+  width: 100%;
+  font-weight: 600;
+}
+
+.todos__item {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 10px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.todos__wrapper .todos__item:last-child {
+  border: none;
+}
+
+.checkbox__size{
+  width: 17px;
+  height: 17px;
+}

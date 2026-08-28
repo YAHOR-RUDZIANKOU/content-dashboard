@@ -6,6 +6,10 @@
   flex-direction: column;
 }
 
+.posts__wrapper :last-child{
+  border: none;
+}
+
 .posts__header {
   display: flex;
   align-items: center;

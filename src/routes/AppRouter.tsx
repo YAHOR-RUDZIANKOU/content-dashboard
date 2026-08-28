@@ -5,6 +5,7 @@ import PublicRoute from "../routes/PublicRoute";
 import ProtectedRoute from "./ProtectedRoute";
 import MainLayout from "../components/layout/MainLayout";
 import Posts from "../pages/Posts/Posts";
+import Todos from "../pages/Todos/Todos";
 const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -27,6 +28,7 @@ const AppRouter = () => {
         >
           <Route index element={<Dashboard />} />
           <Route path="/posts" element={<Posts />} />
+          <Route path="/todos" element={<Todos />} />
         </Route>
       </Routes>
     </BrowserRouter>

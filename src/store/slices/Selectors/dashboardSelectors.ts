@@ -20,7 +20,7 @@ export const selectDashboard = createSelector(
       : "ваши посты отсутствуют";
 
     const currentUserTodos = usersTodos.filter(
-      (value) => value.userId === currentId && value.completed,
+      (value) => value.userId === currentId && !value.completed,
     );
     const todosCount = currentUserTodos.length;
     const subtitleTodos = todosCount

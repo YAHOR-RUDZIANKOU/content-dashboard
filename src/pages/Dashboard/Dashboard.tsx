@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { dashboardThunk } from "../../store/slices/dashboardSlice";
 import RecentPost from "../../components/RecentPost/RecentPost";
 import KpiCardsList from "../../components/KpiCardsList/KpiCardsList";
+import RecentTodosList from "../../components/RecentTodosList/RecentTodosList"
 
 const getFirstName = (name: string) => {
   if (!name) return "";
@@ -44,7 +45,7 @@ const Dashboard = () => {
         </div>
         <div className={classes.dashboard__activity}>
           <RecentPost />
-          <div className={classes.dashboard__todos}></div>
+          <RecentTodosList/>
         </div>
       </main>
     </div>
