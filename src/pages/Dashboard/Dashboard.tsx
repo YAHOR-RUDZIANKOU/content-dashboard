@@ -9,7 +9,7 @@ import RecentPost from "../../components/RecentPost/RecentPost";
 import KpiCardsList from "../../components/KpiCardsList/KpiCardsList";
 import RecentTodosList from "../../components/RecentTodosList/RecentTodosList";
 import KpiCardsSkeleton from "../../components/KpiCardsList/KpiCardsSkeleton";
-import SkeletonCard from "../../components/Skeleton/SkeletonCard/SkeletonCard"
+import SkeletonCard from "../../components/Skeleton/SkeletonCard/SkeletonCard";
 
 const getFirstName = (name: string) => {
   if (!name) return "";
@@ -20,6 +20,7 @@ const Dashboard = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
   const { status } = useAppSelector((state) => state.dashboard);
+  const { error } = useAppSelector((state) => state.dashboard);
 
   useEffect(() => {
     dispatch(dashboardThunk());
@@ -43,26 +44,30 @@ const Dashboard = () => {
         <div className={classes.dashboard__subtitle}>
           Вот что происходит в вашем контенте сегодня.
         </div>
-        <div className={classes.cards__wrapper}>
-          {status === "succeeded" && <KpiCardsList />}
-          {status === "loading" && <KpiCardsSkeleton />}
-        </div>
-        <div className={classes.dashboard__activity}>
-          {status === "succeeded" && (
-            <>
-              <RecentPost />
-              <RecentTodosList />
-            </>
-          )}
-          {
-            status==="loading" && (
-              <>
-              <SkeletonCard style={{ height: '23.75rem' }}/>
-              <SkeletonCard style={{ height: '23.75rem' }}/>
-              </>
-            )
-          }
-        </div>
+        {status === "failed" ? (
+          <div className={classes.error}>{error}</div>
+        ) : (
+          <>
+            <div className={classes.cards__wrapper}>
+              {status === "succeeded" && <KpiCardsList />}
+              {status === "loading" && <KpiCardsSkeleton />}
+            </div>
+            <div className={classes.dashboard__activity}>
+              {status === "succeeded" && (
+                <>
+                  <RecentPost />
+                  <RecentTodosList />
+                </>
+              )}
+              {status === "loading" && (
+                <>
+                  <SkeletonCard style={{ height: "23.75rem" }} />
+                  <SkeletonCard style={{ height: "23.75rem" }} />
+                </>
+              )}
+            </div>
+          </>
+        )}
       </main>
     </div>
   );
