@@ -23,8 +23,10 @@ const Dashboard = () => {
   const { error } = useAppSelector((state) => state.dashboard);
 
   useEffect(() => {
-    dispatch(dashboardThunk());
-  }, [dispatch]);
+    if (status === "idle") {
+      dispatch(dashboardThunk());
+    }
+  }, [dispatch, status]);
 
   return (
     <div className={classes.dashboard__wrapper}>

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import dashboardApi from "../../api/dashboardApi";
+import { logout } from "../slices/authSlice";
 import type {
   Post,
   Todo,
@@ -58,6 +59,10 @@ const dashboardSlice = createSlice({
       .addCase(dashboardThunk.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload ?? "Неизвестная ошибка";
+      })
+
+      .addCase(logout, () => {
+        return initialState;
       });
   },
 });
@@ -70,7 +75,7 @@ export const dashboardThunk = createAsyncThunk<
   { rejectValue: string }
 >("dashboard/dash", async (_, thunkAPI) => {
   try {
-     await new Promise<void>((res) => setTimeout(() => res(), 1500));
+    await new Promise<void>((res) => setTimeout(() => res(), 1000));
     const [postsRes, todosRes, albumsRes, usersRes, photoRes, commentsRes] =
       await Promise.all([
         dashboardApi.getPost(),
