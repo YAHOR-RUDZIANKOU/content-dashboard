@@ -31,9 +31,9 @@
   flex-grow: 1;
   padding: 20px;
   background-color: #f4f4f4;
-  /* display: flex;
+  display: flex;
   flex-direction: column;
-  gap: 15px; */
+  gap: 15px;
 }
 
 .post__filters {

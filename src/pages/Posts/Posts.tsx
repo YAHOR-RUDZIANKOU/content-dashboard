@@ -6,36 +6,42 @@ import { useAppDispatch, useAppSelector } from "../../store/index";
 import { usersThunk } from "../../store/slices/usersSlice";
 import AuthorSelect from "../../components/authorSelect/AuthorSelect";
 import { Grid2X2, Rows3 } from "lucide-react";
+import PostList from "../../components/PostList/PostList";
 
 const Posts = () => {
   const dispatch = useAppDispatch();
-  const statusPosts = useAppSelector((state) => state.post.status);
-  const totalCount = useAppSelector((state) => state.post.items.length);
   const statusUsers = useAppSelector((state) => state.users.status);
-  const currentId = useAppSelector((state) => state.auth.user?.id);
+  const userId = useAppSelector((state) => state.auth.user?.id);
+  const totalCount = useAppSelector((state) => state.post.totalCount);
+  const items = useAppSelector((state) => state.post.items);
+  const limit = 6;
+  const nameAuth = useAppSelector((state) => state.auth.user?.name);
+  const allAuthors = useAppSelector((state) => state.users.items);
 
   const [search, setSearch] = useState("");
-  const [authorId, setAuthorId] = useState<number | "">(currentId ?? "");
+  const [authorId, setAuthorId] = useState<number | "">(userId ?? "");
   const [isMyPosts, setIsMyPosts] = useState(true);
-  const [viewMode, setViewMode] = useState("grid");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [page, setPage] = useState<number>(1);
 
   const handleMyPostsToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsMyPosts(e.target.checked);
     if (e.target.checked) {
-      setAuthorId(currentId ?? "");
+      setAuthorId(userId ?? "");
     } else {
       setAuthorId("");
     }
   };
 
   useEffect(() => {
-    if (statusPosts === "idle") {
-      dispatch(postThunk());
-    }
     if (statusUsers === "idle") {
       dispatch(usersThunk());
     }
-  }, [dispatch, statusPosts, statusUsers]);
+  }, [dispatch, statusUsers]);
+
+  useEffect(() => {
+    dispatch(postThunk({ page, limit, userId: authorId || undefined }));
+  }, [dispatch, page, limit, authorId]);
 
   return (
     <div className={classes.posts__wrapper}>
@@ -91,7 +97,12 @@ const Posts = () => {
             </button>
           </div>
         </div>
-        <div className={classes.post__cards}></div>
+        <PostList
+          items={items}
+          viewMode={viewMode}
+          currentId={userId}
+          allAuthors={allAuthors}
+        />
         <div className={classes.post__pagination}></div>
       </main>
     </div>

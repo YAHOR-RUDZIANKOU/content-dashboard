@@ -16,6 +16,7 @@ const AuthorSelect = ({
 }: AuthorSelectProps) => {
   const selectItems = useAppSelector(usersSelectors);
   const currentId = useAppSelector((state) => state.auth.user?.id);
+
   const handleAuthorChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = e.target.value;
     const parsedValue = selectedValue === "" ? "" : Number(selectedValue);
@@ -26,6 +27,7 @@ const AuthorSelect = ({
       setIsMyPosts(true);
     }
   };
+  
   return (
     <div className={classes.select__wrapper}>
       <select

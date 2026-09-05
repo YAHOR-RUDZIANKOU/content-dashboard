@@ -2,13 +2,26 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { Post } from "../../types/dashboard";
 import axios from "axios";
 
+type FetchPostsArgs = {
+  page: number;
+  limit: number;
+  userId: number | undefined;
+};
+
 type initialType = {
   items: Post[];
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
+  totalCount: number;
+};
+
+type AsyncThunk = {
+  posts: Post[];
+  totalCount: number;
 };
 
 const initialState: initialType = {
+  totalCount: 0,
   items: [],
   status: "idle",
   error: null,
@@ -27,7 +40,8 @@ const postSlice = createSlice({
 
       .addCase(postThunk.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.items = action.payload;
+        state.items = action.payload.posts;
+        state.totalCount = action.payload.totalCount;
       })
 
       .addCase(postThunk.rejected, (state, action) => {
@@ -40,15 +54,21 @@ const postSlice = createSlice({
 export default postSlice.reducer;
 
 export const postThunk = createAsyncThunk<
-  Post[],
-  void,
+  AsyncThunk,
+  FetchPostsArgs,
   { rejectValue: string }
->("post/fetchPosts", async (_, thunkAPI) => {
+>("post/fetchPosts", async ({ page, limit, userId }, thunkAPI) => {
   try {
     const postData = await axios<Post[]>(
       "https://jsonplaceholder.typicode.com/posts",
+      {
+        params: { _page: page, _limit: limit, userId: userId },
+      },
     );
-    return postData.data;
+    return {
+      posts: postData.data,
+      totalCount: postData.headers["x-total-count"],
+    };
   } catch (e: unknown) {
     const errorMessage = e instanceof Error ? e.message : "Неизвестная ошибка";
     return thunkAPI.rejectWithValue(errorMessage);
