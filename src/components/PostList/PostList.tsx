@@ -20,6 +20,7 @@ const PostList = ({ items, viewMode, currentId, allAuthors }: PostListProps) => 
         const btnFlag = currentId === value.userId;
         return (
           <PostCard
+          viewMode={viewMode}
             key={value.id}
             post={value}
             btnFlag={btnFlag}

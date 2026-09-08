@@ -5,6 +5,8 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
+  flex-shrink: 1;
+  min-width: 280px;
 }
 
 .card__title {

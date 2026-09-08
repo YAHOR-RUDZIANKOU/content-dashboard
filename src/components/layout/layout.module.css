@@ -1,9 +1,13 @@
 .pageContainer {
   display: flex;
+  flex-grow: 1;
+  min-height: 100vh;
+  align-items: stretch;
 }
 
 .navBar {
   flex-shrink: 0;
+  height: auto;
 }
 
 .content {

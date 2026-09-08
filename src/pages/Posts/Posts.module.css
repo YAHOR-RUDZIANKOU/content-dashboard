@@ -43,6 +43,7 @@
   border: 1px solid #eaeaea;
   display: flex;
   gap: 15px;
+  flex-wrap: wrap;
 }
 
 .input__icon {
@@ -63,6 +64,7 @@
   padding: 7px 5px 7px 25px;
   color: #333333;
   width: 100%;
+  min-width: 0px;
 }
 
 .post__input:focus {

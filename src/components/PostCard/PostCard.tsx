@@ -10,6 +10,7 @@ type PostCardProps = {
   post: Post;
   btnFlag: boolean;
   nameAuth: string | undefined;
+  viewMode: "grid" | "list";
 };
 const PostCard = ({ post, btnFlag, nameAuth }: PostCardProps) => {
   return (
