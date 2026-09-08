@@ -1,0 +1,28 @@
+.pagination__btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pagination__text {
+  color: #707070;
+  font-size: 13px;
+}
+
+.pagination__wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pagination__btn {
+  min-width: 40px;
+  min-height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.arrow__general{
+    
+}

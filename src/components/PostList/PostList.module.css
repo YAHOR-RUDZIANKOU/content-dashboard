@@ -5,3 +5,8 @@
   gap: 20px;
 }
 
+.post__list{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}

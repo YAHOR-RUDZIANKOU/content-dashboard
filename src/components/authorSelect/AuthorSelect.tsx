@@ -7,12 +7,14 @@ type AuthorSelectProps = {
   authorId: string | number;
   setAuthorId: (value: number | "") => void;
   setIsMyPosts: (value: boolean) => void;
+  setPage:(value:number)=>void;
 };
 
 const AuthorSelect = ({
   authorId,
   setAuthorId,
   setIsMyPosts,
+  setPage,
 }: AuthorSelectProps) => {
   const selectItems = useAppSelector(usersSelectors);
   const currentId = useAppSelector((state) => state.auth.user?.id);
@@ -21,6 +23,7 @@ const AuthorSelect = ({
     const selectedValue = e.target.value;
     const parsedValue = selectedValue === "" ? "" : Number(selectedValue);
     setAuthorId(parsedValue);
+    setPage(1)
     if (parsedValue !== currentId) {
       setIsMyPosts(false);
     } else {

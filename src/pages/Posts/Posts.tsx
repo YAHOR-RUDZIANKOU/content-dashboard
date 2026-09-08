@@ -7,6 +7,7 @@ import { usersThunk } from "../../store/slices/usersSlice";
 import AuthorSelect from "../../components/authorSelect/AuthorSelect";
 import { Grid2X2, Rows3 } from "lucide-react";
 import PostList from "../../components/PostList/PostList";
+import PostsPagination from "../../components/PostsPagination/PostsPagination";
 
 const Posts = () => {
   const dispatch = useAppDispatch();
@@ -15,7 +16,6 @@ const Posts = () => {
   const totalCount = useAppSelector((state) => state.post.totalCount);
   const items = useAppSelector((state) => state.post.items);
   const limit = 6;
-  const nameAuth = useAppSelector((state) => state.auth.user?.name);
   const allAuthors = useAppSelector((state) => state.users.items);
 
   const [search, setSearch] = useState("");
@@ -69,6 +69,7 @@ const Posts = () => {
             authorId={authorId}
             setAuthorId={setAuthorId}
             setIsMyPosts={setIsMyPosts}
+            setPage={setPage}
           />
           <label className={classes.label__toggle}>
             <input
@@ -103,7 +104,7 @@ const Posts = () => {
           currentId={userId}
           allAuthors={allAuthors}
         />
-        <div className={classes.post__pagination}></div>
+        <PostsPagination page={page} totalCount={totalCount} limit={limit} setPage={setPage} />
       </main>
     </div>
   );
