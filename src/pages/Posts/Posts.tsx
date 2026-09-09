@@ -35,7 +35,7 @@ const Posts = () => {
   };
 
   const debouncedSearch = useDebounce(search, 1000);
-  
+
   useEffect(() => {
     if (statusUsers === "idle") {
       dispatch(usersThunk());
@@ -47,7 +47,7 @@ const Posts = () => {
   }, [dispatch, page, limit, authorId]);
 
   const filteredPosts = useMemo(() => {
-    const searchLower = search.toLowerCase();
+    const searchLower = debouncedSearch.toLowerCase();
     return items.filter(
       (post) =>
         post.title.toLowerCase().includes(searchLower) ||

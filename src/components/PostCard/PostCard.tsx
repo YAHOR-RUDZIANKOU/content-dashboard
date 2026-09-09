@@ -1,6 +1,7 @@
 import type { Post } from "../../types/dashboard";
 import classes from "./PostCard.module.css";
 import Button from "../UI/Button/Button";
+import { memo } from "react";
 
 function sliceText(str: string) {
   return str.split(/\s+/).slice(0, 22).join(" ");
@@ -12,7 +13,9 @@ type PostCardProps = {
   nameAuth: string | undefined;
   viewMode: "grid" | "list";
 };
-const PostCard = ({ post, btnFlag, nameAuth }: PostCardProps) => {
+
+const PostCard = memo(({ post, btnFlag, nameAuth }: PostCardProps) => {
+  console.log("карточки создаются заново");
   return (
     <div className={classes.card__wrapper}>
       <div className={classes.card__title}>{post.title}</div>
@@ -28,6 +31,6 @@ const PostCard = ({ post, btnFlag, nameAuth }: PostCardProps) => {
       </div>
     </div>
   );
-};
+});
 
 export default PostCard;
