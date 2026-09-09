@@ -1,13 +1,14 @@
 import classes from "./Posts.module.css";
 import Button from "../../components/UI/Button/Button";
 import { postThunk } from "../../store/slices/postsSlice";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/index";
 import { usersThunk } from "../../store/slices/usersSlice";
 import AuthorSelect from "../../components/authorSelect/AuthorSelect";
 import { Grid2X2, Rows3 } from "lucide-react";
 import PostList from "../../components/PostList/PostList";
 import PostsPagination from "../../components/PostsPagination/PostsPagination";
+import useDebounce from "../../hooks/useDebounce";
 
 const Posts = () => {
   const dispatch = useAppDispatch();
@@ -33,6 +34,8 @@ const Posts = () => {
     }
   };
 
+  const debouncedSearch = useDebounce(search, 1000);
+  
   useEffect(() => {
     if (statusUsers === "idle") {
       dispatch(usersThunk());
@@ -42,6 +45,15 @@ const Posts = () => {
   useEffect(() => {
     dispatch(postThunk({ page, limit, userId: authorId || undefined }));
   }, [dispatch, page, limit, authorId]);
+
+  const filteredPosts = useMemo(() => {
+    const searchLower = search.toLowerCase();
+    return items.filter(
+      (post) =>
+        post.title.toLowerCase().includes(searchLower) ||
+        post.body.toLowerCase().includes(searchLower),
+    );
+  }, [items, debouncedSearch]);
 
   return (
     <div className={classes.posts__wrapper}>
@@ -99,12 +111,17 @@ const Posts = () => {
           </div>
         </div>
         <PostList
-          items={items}
+          items={filteredPosts}
           viewMode={viewMode}
           currentId={userId}
           allAuthors={allAuthors}
         />
-        <PostsPagination page={page} totalCount={totalCount} limit={limit} setPage={setPage} />
+        <PostsPagination
+          page={page}
+          totalCount={totalCount}
+          limit={limit}
+          setPage={setPage}
+        />
       </main>
     </div>
   );

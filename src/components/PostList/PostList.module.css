@@ -1,13 +1,25 @@
 .posts__grid {
-    flex-grow: 1;
+  flex-grow: 1;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
 
-.post__list{
+.post__list {
   display: flex;
   flex-direction: column;
   gap: 15px;
   flex-grow: 1;
+}
+
+@media (max-width: 1100px) {
+  .posts__grid {
+    grid-template-columns: repeat(2, 1fr); 
+  }
+}
+
+@media (max-width: 850px) {
+  .posts__grid {
+    grid-template-columns: 1fr 
+  }
 }

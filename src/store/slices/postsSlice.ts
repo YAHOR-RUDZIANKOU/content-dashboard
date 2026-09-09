@@ -60,7 +60,7 @@ export const postThunk = createAsyncThunk<
 >("post/fetchPosts", async ({ page, limit, userId }, thunkAPI) => {
   try {
     const postData = await axios<Post[]>(
-      "https://jsonplaceholder.typicode.com/posts",
+      `https://jsonplaceholder.typicode.com/posts`,
       {
         params: { _page: page, _limit: limit, userId: userId },
       },
