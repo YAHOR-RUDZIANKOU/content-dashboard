@@ -1,22 +1,21 @@
 import type { Post } from "../../types/dashboard";
 import PostCard from "../PostCard/PostCard";
 import classes from "./PostList.module.css";
-import type { User } from "../../types/user";
 import { memo } from 'react';
+import {useAppSelector} from "../../store/index"
 
 type PostListProps = {
   items: Post[];
   viewMode: "grid" | "list";
   currentId: number | undefined;
-  allAuthors: User[];
 };
 
 const PostList = ({
   items,
   viewMode,
   currentId,
-  allAuthors,
 }: PostListProps) => {
+    const allAuthors = useAppSelector((state) => state.users.items);
   return (
     <div
       className={viewMode === "grid" ? classes.posts__grid : classes.post__list}

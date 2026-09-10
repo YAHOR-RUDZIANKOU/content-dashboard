@@ -1,5 +1,6 @@
 import classes from "./PostsPagination.module.css";
 import Button from "../UI/Button/Button";
+import { memo } from 'react';
 
 type PostsPaginationProps = {
   totalCount: number;
@@ -69,4 +70,4 @@ const PostsPagination = ({
   );
 };
 
-export default PostsPagination;
+export default memo(PostsPagination);

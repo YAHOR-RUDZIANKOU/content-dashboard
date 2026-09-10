@@ -6,6 +6,7 @@ type FetchPostsArgs = {
   page: number;
   limit: number;
   userId: number | undefined;
+  debouncedSearch: string;
 };
 
 type initialType = {
@@ -57,20 +58,29 @@ export const postThunk = createAsyncThunk<
   AsyncThunk,
   FetchPostsArgs,
   { rejectValue: string }
->("post/fetchPosts", async ({ page, limit, userId }, thunkAPI) => {
-  try {
-    const postData = await axios<Post[]>(
-      `https://jsonplaceholder.typicode.com/posts`,
-      {
-        params: { _page: page, _limit: limit, userId: userId },
-      },
-    );
-    return {
-      posts: postData.data,
-      totalCount: postData.headers["x-total-count"],
-    };
-  } catch (e: unknown) {
-    const errorMessage = e instanceof Error ? e.message : "Неизвестная ошибка";
-    return thunkAPI.rejectWithValue(errorMessage);
-  }
-});
+>(
+  "post/fetchPosts",
+  async ({ page, limit, userId, debouncedSearch }, thunkAPI) => {
+    try {
+      const postData = await axios<Post[]>(
+        `https://jsonplaceholder.typicode.com/posts`,
+        {
+          params: {
+            _page: page,
+            _limit: limit,
+            userId: userId,
+            q: debouncedSearch,
+          },
+        },
+      );
+      return {
+        posts: postData.data,
+        totalCount: postData.headers["x-total-count"],
+      };
+    } catch (e: unknown) {
+      const errorMessage =
+        e instanceof Error ? e.message : "Неизвестная ошибка";
+      return thunkAPI.rejectWithValue(errorMessage);
+    }
+  },
+);

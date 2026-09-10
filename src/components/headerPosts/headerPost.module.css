@@ -1,0 +1,22 @@
+.post__header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.post__title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.post__count {
+  color: #707070;
+  font-size: 13px;
+}
+
+.post__text {
+  font-size: 18px;
+  font-weight: 600;
+}

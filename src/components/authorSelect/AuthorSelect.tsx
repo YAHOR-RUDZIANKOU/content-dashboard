@@ -2,12 +2,13 @@ import classes from "./authorSelect.module.css";
 import { useAppSelector } from "../../store/index";
 import { usersSelectors } from "../../store/slices/Selectors/usersSelectors";
 import { ChevronDown } from "lucide-react";
+import { memo } from 'react';
 
 type AuthorSelectProps = {
   authorId: string | number;
   setAuthorId: (value: number | "") => void;
   setIsMyPosts: (value: boolean) => void;
-  setPage:(value:number)=>void;
+  setPage: (value: number) => void;
 };
 
 const AuthorSelect = ({
@@ -23,14 +24,14 @@ const AuthorSelect = ({
     const selectedValue = e.target.value;
     const parsedValue = selectedValue === "" ? "" : Number(selectedValue);
     setAuthorId(parsedValue);
-    setPage(1)
+    setPage(1);
     if (parsedValue !== currentId) {
       setIsMyPosts(false);
     } else {
       setIsMyPosts(true);
     }
   };
-  
+
   return (
     <div className={classes.select__wrapper}>
       <select
@@ -48,4 +49,4 @@ const AuthorSelect = ({
   );
 };
 
-export default AuthorSelect;
+export default memo(AuthorSelect);

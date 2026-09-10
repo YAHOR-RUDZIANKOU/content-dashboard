@@ -15,7 +15,6 @@ type PostCardProps = {
 };
 
 const PostCard = memo(({ post, btnFlag, nameAuth }: PostCardProps) => {
-  console.log("карточки создаются заново");
   return (
     <div className={classes.card__wrapper}>
       <div className={classes.card__title}>{post.title}</div>
