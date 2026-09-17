@@ -3,6 +3,7 @@ import classes from "./PostCard.module.css";
 import Button from "../UI/Button/Button";
 import { memo } from "react";
 
+
 function sliceText(str: string) {
   return str.split(/\s+/).slice(0, 22).join(" ");
 }
@@ -12,9 +13,10 @@ type PostCardProps = {
   btnFlag: boolean;
   nameAuth: string | undefined;
   viewMode: "grid" | "list";
+  setSelectedPost: (value: Post) => void;
 };
 
-const PostCard = memo(({ post, btnFlag, nameAuth }: PostCardProps) => {
+const PostCard = memo(({ post, btnFlag, nameAuth,setSelectedPost }: PostCardProps) => {
   return (
     <div className={classes.card__wrapper}>
       <div className={classes.card__title}>{post.title}</div>
@@ -24,7 +26,7 @@ const PostCard = memo(({ post, btnFlag, nameAuth }: PostCardProps) => {
         {btnFlag && (
           <div className={classes.btn__wrapper}>
             <Button>Изменить</Button>
-            <Button variant="danger">Удалить</Button>
+            <Button onClick={()=>setSelectedPost(post)} variant="danger">Удалить</Button>
           </div>
         )}
       </div>

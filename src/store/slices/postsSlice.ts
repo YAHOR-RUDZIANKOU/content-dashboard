@@ -9,11 +9,18 @@ type FetchPostsArgs = {
   debouncedSearch: string;
 };
 
+type DeletePostsArg = {
+  selectedPost: Post;
+};
+
 type initialType = {
   items: Post[];
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
   totalCount: number;
+  postDelete: Post | null;
+  errorDelete: string | null;
+  indexDeletePost: number | null;
 };
 
 type AsyncThunk = {
@@ -26,6 +33,9 @@ const initialState: initialType = {
   items: [],
   status: "idle",
   error: null,
+  postDelete: null,
+  errorDelete: null,
+  indexDeletePost: null,
 };
 
 const postSlice = createSlice({
@@ -48,6 +58,29 @@ const postSlice = createSlice({
       .addCase(postThunk.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload ?? "Неизвестная ошибка";
+      })
+
+      .addCase(postDelete.pending, (state, action) => {
+        state.postDelete = action.meta.arg.selectedPost;
+        state.indexDeletePost = state.items.findIndex(
+          (value) => value.id === state.postDelete?.id,
+        );
+        state.items = state.items.filter(
+          (value) => value.id !== state.postDelete?.id,
+        );
+      })
+
+      .addCase(postDelete.fulfilled, (state) => {
+        state.errorDelete = null;
+        state.postDelete = null;
+        state.indexDeletePost = null;
+      })
+
+      .addCase(postDelete.rejected, (state, action) => {
+        state.errorDelete = action.payload ?? "Неизвестная ошибка";
+        if (state.postDelete && state.indexDeletePost !== null) {
+          state.items.splice(state.indexDeletePost, 0, state.postDelete);
+        }
       });
   },
 });
@@ -84,3 +117,19 @@ export const postThunk = createAsyncThunk<
     }
   },
 );
+
+export const postDelete = createAsyncThunk<
+  Post,
+  DeletePostsArg,
+  { rejectValue: string }
+>("post/deletePost", async ({ selectedPost }: DeletePostsArg, thunkAPI) => {
+  try {
+    await axios.delete(
+      `https://jsonplaceholder.typicode.com/posts/${selectedPost.id}`,
+    );
+    return selectedPost;
+  } catch (e: unknown) {
+    const errorMessage = e instanceof Error ? e.message : "Неизвестная ошибка";
+    return thunkAPI.rejectWithValue(errorMessage);
+  }
+});

@@ -1,5 +1,4 @@
 import classes from "./Posts.module.css";
-import Button from "../../components/UI/Button/Button";
 import { postThunk } from "../../store/slices/postsSlice";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/index";
@@ -9,6 +8,8 @@ import PostsPagination from "../../components/PostsPagination/PostsPagination";
 import useDebounce from "../../hooks/useDebounce";
 import PostFiltersPanel from "../../components/PostFiltersPanel/PostFiltersPanel";
 import HeaderPosts from "../../components/headerPosts/HeaderPosts";
+import type { Post } from "../../types/dashboard";
+import DeletePostModal from "../../components/DeletePostModal/DeletePostModal";
 
 const Posts = () => {
   const dispatch = useAppDispatch();
@@ -22,6 +23,8 @@ const Posts = () => {
   const [authorId, setAuthorId] = useState<number | "">(userId ?? "");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [page, setPage] = useState<number>(1);
+  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [allCountDelete, setAllCountDelete] = useState<number>(0);
 
   const debouncedSearch = useDebounce(search, 1000);
 
@@ -45,7 +48,7 @@ const Posts = () => {
 
   return (
     <div className={classes.posts__wrapper}>
-      <HeaderPosts totalCount={totalCount} />
+      <HeaderPosts totalCount={totalCount} allCountDelete={allCountDelete}  />
       <main className={classes.post__main}>
         <PostFiltersPanel
           search={search}
@@ -56,14 +59,29 @@ const Posts = () => {
           setViewMode={setViewMode}
           viewMode={viewMode}
         />
-        <PostList items={items} viewMode={viewMode} currentId={userId} />
+        <PostList
+          items={items}
+          viewMode={viewMode}
+          currentId={userId}
+          setSelectedPost={setSelectedPost}
+        />
         <PostsPagination
+          items={items}
           page={page}
           totalCount={totalCount}
           limit={limit}
           setPage={setPage}
+          allCountDelete={allCountDelete}
+          setAllCountDelete={setAllCountDelete}
         />
       </main>
+      {selectedPost && (
+        <DeletePostModal
+          selectedPost={selectedPost}
+          setSelectedPost={setSelectedPost}
+          setAllCountDelete={setAllCountDelete}
+        />
+      )}
     </div>
   );
 };

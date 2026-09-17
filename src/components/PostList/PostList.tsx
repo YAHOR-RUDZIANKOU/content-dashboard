@@ -8,12 +8,14 @@ type PostListProps = {
   items: Post[];
   viewMode: "grid" | "list";
   currentId: number | undefined;
+  setSelectedPost:(value:Post)=>void
 };
 
 const PostList = ({
   items,
   viewMode,
   currentId,
+  setSelectedPost
 }: PostListProps) => {
     const allAuthors = useAppSelector((state) => state.users.items);
   return (
@@ -32,6 +34,7 @@ const PostList = ({
             post={value}
             btnFlag={btnFlag}
             nameAuth={currentAuthor?.name ?? "Неизвестный автор"}
+            setSelectedPost={setSelectedPost}
           />
         );
       })}
