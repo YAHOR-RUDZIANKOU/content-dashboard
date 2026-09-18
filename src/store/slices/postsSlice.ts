@@ -16,6 +16,7 @@ type DeletePostsArg = {
 type initialType = {
   items: Post[];
   status: "idle" | "loading" | "succeeded" | "failed";
+  statusError: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
   totalCount: number;
   postDelete: Post | null;
@@ -32,6 +33,7 @@ const initialState: initialType = {
   totalCount: 0,
   items: [],
   status: "idle",
+  statusError: "idle",
   error: null,
   postDelete: null,
   errorDelete: null,
@@ -41,7 +43,11 @@ const initialState: initialType = {
 const postSlice = createSlice({
   name: "post",
   initialState,
-  reducers: {},
+  reducers: {
+    updateErrorDelete(state) {
+      state.errorDelete = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(postThunk.pending, (state) => {
@@ -61,6 +67,7 @@ const postSlice = createSlice({
       })
 
       .addCase(postDelete.pending, (state, action) => {
+        state.statusError = "loading";
         state.postDelete = action.meta.arg.selectedPost;
         state.indexDeletePost = state.items.findIndex(
           (value) => value.id === state.postDelete?.id,
@@ -71,12 +78,14 @@ const postSlice = createSlice({
       })
 
       .addCase(postDelete.fulfilled, (state) => {
+        state.statusError = "succeeded";
         state.errorDelete = null;
         state.postDelete = null;
         state.indexDeletePost = null;
       })
 
       .addCase(postDelete.rejected, (state, action) => {
+        state.statusError = "failed";
         state.errorDelete = action.payload ?? "Неизвестная ошибка";
         if (state.postDelete && state.indexDeletePost !== null) {
           state.items.splice(state.indexDeletePost, 0, state.postDelete);
@@ -84,6 +93,8 @@ const postSlice = createSlice({
       });
   },
 });
+
+export const { updateErrorDelete } = postSlice.actions;
 
 export default postSlice.reducer;
 

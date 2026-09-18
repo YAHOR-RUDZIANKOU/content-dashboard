@@ -10,7 +10,7 @@
   align-items: center;
 }
 
-.modal__inner{
+.modal__inner {
   background-color: white;
   padding: 20px;
   max-width: 400px;
@@ -21,16 +21,16 @@
   gap: 5px;
 }
 
-.modal__title{
+.modal__title {
   font-weight: 600;
   font-size: 18px;
 }
 
-.modal__text{
+.modal__text {
   color: #707070;
 }
 
-.modal__btns{
+.modal__btns {
   display: flex;
   gap: 7px;
   justify-content: end;
@@ -38,4 +38,8 @@
 
 :global(body.no-scroll) {
   overflow: hidden;
+}
+
+.delete__errors {
+  color: red;
 }
