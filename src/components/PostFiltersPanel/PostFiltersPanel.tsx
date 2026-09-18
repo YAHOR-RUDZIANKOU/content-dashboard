@@ -12,6 +12,8 @@ type PostFiltersPanelProps = {
   setPage: (value: number) => void;
   setViewMode: (value: "grid" | "list") => void;
   viewMode: "grid" | "list";
+  isMyPosts: boolean;
+  setIsMyPosts: (value: boolean) => void;
 };
 
 const PostFiltersPanel = ({
@@ -22,8 +24,9 @@ const PostFiltersPanel = ({
   setPage,
   setViewMode,
   viewMode,
+  isMyPosts,
+  setIsMyPosts,
 }: PostFiltersPanelProps) => {
-  const [isMyPosts, setIsMyPosts] = useState(true);
   const userId = useAppSelector((state) => state.auth.user?.id);
   const handleMyPostsToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsMyPosts(e.target.checked);

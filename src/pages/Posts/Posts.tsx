@@ -10,6 +10,7 @@ import PostFiltersPanel from "../../components/PostFiltersPanel/PostFiltersPanel
 import HeaderPosts from "../../components/headerPosts/HeaderPosts";
 import type { Post } from "../../types/dashboard";
 import DeletePostModal from "../../components/DeletePostModal/DeletePostModal";
+import EmptyState from "../../components/EmptyState/EmptyState";
 
 const Posts = () => {
   const dispatch = useAppDispatch();
@@ -25,6 +26,7 @@ const Posts = () => {
   const [page, setPage] = useState<number>(1);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [allCountDelete, setAllCountDelete] = useState<number>(0);
+  const [isMyPosts, setIsMyPosts] = useState(true);
 
   const debouncedSearch = useDebounce(search, 1000);
 
@@ -48,7 +50,7 @@ const Posts = () => {
 
   return (
     <div className={classes.posts__wrapper}>
-      <HeaderPosts totalCount={totalCount} allCountDelete={allCountDelete}  />
+      <HeaderPosts totalCount={totalCount} allCountDelete={allCountDelete} />
       <main className={classes.post__main}>
         <PostFiltersPanel
           search={search}
@@ -58,22 +60,36 @@ const Posts = () => {
           setPage={setPage}
           setViewMode={setViewMode}
           viewMode={viewMode}
+          isMyPosts={isMyPosts}
+          setIsMyPosts={setIsMyPosts}
         />
-        <PostList
-          items={items}
-          viewMode={viewMode}
-          currentId={userId}
-          setSelectedPost={setSelectedPost}
-        />
-        <PostsPagination
-          items={items}
-          page={page}
-          totalCount={totalCount}
-          limit={limit}
-          setPage={setPage}
-          allCountDelete={allCountDelete}
-          setAllCountDelete={setAllCountDelete}
-        />
+        {items.length > 0 ? (
+          <>
+            <PostList
+              items={items}
+              viewMode={viewMode}
+              currentId={userId}
+              setSelectedPost={setSelectedPost}
+            />
+
+            <PostsPagination
+              items={items}
+              page={page}
+              totalCount={totalCount}
+              limit={limit}
+              setPage={setPage}
+              allCountDelete={allCountDelete}
+              setAllCountDelete={setAllCountDelete}
+            />
+          </>
+        ) : (
+          <EmptyState
+            search={search}
+            setSearch={setSearch}
+            setAuthorId={setAuthorId}
+            setIsMyPosts={setIsMyPosts}
+          />
+        )}
       </main>
       {selectedPost && (
         <DeletePostModal
