@@ -9,6 +9,11 @@ type FetchPostsArgs = {
   debouncedSearch: string;
 };
 
+type PostError = {
+  message: string;
+  status?: number;
+};
+
 type DeletePostsArg = {
   selectedPost: Post;
 };
@@ -17,7 +22,7 @@ type initialType = {
   items: Post[];
   status: "idle" | "loading" | "succeeded" | "failed";
   statusError: "idle" | "loading" | "succeeded" | "failed";
-  error: string | null;
+  error: PostError | null;
   totalCount: number;
   postDelete: Post | null;
   errorDelete: string | null;
@@ -63,7 +68,7 @@ const postSlice = createSlice({
 
       .addCase(postThunk.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.payload ?? "Неизвестная ошибка";
+        state.error = action.payload ?? { message: "Неизвестная ошибка" };
       })
 
       .addCase(postDelete.pending, (state, action) => {
@@ -101,7 +106,7 @@ export default postSlice.reducer;
 export const postThunk = createAsyncThunk<
   AsyncThunk,
   FetchPostsArgs,
-  { rejectValue: string }
+  { rejectValue: PostError }
 >(
   "post/fetchPosts",
   async ({ page, limit, userId, debouncedSearch }, thunkAPI) => {
@@ -124,7 +129,10 @@ export const postThunk = createAsyncThunk<
     } catch (e: unknown) {
       const errorMessage =
         e instanceof Error ? e.message : "Неизвестная ошибка";
-      return thunkAPI.rejectWithValue(errorMessage);
+      return thunkAPI.rejectWithValue({
+        message: errorMessage,
+        status: axios.isAxiosError(e) ? e.response?.status : undefined,
+      });
     }
   },
 );

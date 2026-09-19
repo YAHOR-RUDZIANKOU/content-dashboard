@@ -11,6 +11,8 @@ import HeaderPosts from "../../components/headerPosts/HeaderPosts";
 import type { Post } from "../../types/dashboard";
 import DeletePostModal from "../../components/DeletePostModal/DeletePostModal";
 import EmptyState from "../../components/EmptyState/EmptyState";
+import ErrorState from "../../components/ErrorState/ErrorState";
+import { useNavigate } from "react-router-dom";
 
 const Posts = () => {
   const dispatch = useAppDispatch();
@@ -19,6 +21,8 @@ const Posts = () => {
   const totalCount = useAppSelector((state) => state.post.totalCount);
   const items = useAppSelector((state) => state.post.items);
   const limit = 6;
+  const error = useAppSelector((state) => state.post.error);
+  const navigate = useNavigate();
 
   const [search, setSearch] = useState("");
   const [authorId, setAuthorId] = useState<number | "">(userId ?? "");
@@ -49,56 +53,80 @@ const Posts = () => {
   }, [dispatch, page, limit, authorId, debouncedSearch, search]);
 
   return (
-    <div className={classes.posts__wrapper}>
-      <HeaderPosts totalCount={totalCount} allCountDelete={allCountDelete} />
-      <main className={classes.post__main}>
-        <PostFiltersPanel
-          search={search}
-          setSearch={setSearch}
-          authorId={authorId}
-          setAuthorId={setAuthorId}
-          setPage={setPage}
-          setViewMode={setViewMode}
-          viewMode={viewMode}
-          isMyPosts={isMyPosts}
-          setIsMyPosts={setIsMyPosts}
+    <>
+      {error ? (
+        <ErrorState
+          title="Не смогли загрузить посты"
+          subtitle={`Сервер ответил ${error.status}. Ничего страшного - попробуем еще раз`}
+          btnText="На дашборд"
+          onBack={() => navigate("/")}
+          onRetry={() =>
+            dispatch(
+              postThunk({
+                page,
+                limit,
+                userId: authorId || undefined,
+                debouncedSearch,
+              }),
+            )
+          }
         />
-        {items.length > 0 ? (
-          <>
-            <PostList
-              items={items}
-              viewMode={viewMode}
-              currentId={userId}
-              setSelectedPost={setSelectedPost}
-            />
-
-            <PostsPagination
-              items={items}
-              page={page}
-              totalCount={totalCount}
-              limit={limit}
+      ) : (
+        <div className={classes.posts__wrapper}>
+          <HeaderPosts
+            totalCount={totalCount}
+            allCountDelete={allCountDelete}
+          />
+          <main className={classes.post__main}>
+            <PostFiltersPanel
+              search={search}
+              setSearch={setSearch}
+              authorId={authorId}
+              setAuthorId={setAuthorId}
               setPage={setPage}
-              allCountDelete={allCountDelete}
+              setViewMode={setViewMode}
+              viewMode={viewMode}
+              isMyPosts={isMyPosts}
+              setIsMyPosts={setIsMyPosts}
+            />
+            {items.length > 0 || search.length === 0 ? (
+              <>
+                <PostList
+                  items={items}
+                  viewMode={viewMode}
+                  currentId={userId}
+                  setSelectedPost={setSelectedPost}
+                />
+
+                <PostsPagination
+                  items={items}
+                  page={page}
+                  totalCount={totalCount}
+                  limit={limit}
+                  setPage={setPage}
+                  allCountDelete={allCountDelete}
+                  setAllCountDelete={setAllCountDelete}
+                />
+              </>
+            ) : (
+              <EmptyState
+                search={search}
+                setSearch={setSearch}
+                setAuthorId={setAuthorId}
+                setIsMyPosts={setIsMyPosts}
+              />
+            )}
+          </main>
+          {selectedPost && (
+            <DeletePostModal
+              selectedPost={selectedPost}
+              setSelectedPost={setSelectedPost}
               setAllCountDelete={setAllCountDelete}
             />
-          </>
-        ) : (
-          <EmptyState
-            search={search}
-            setSearch={setSearch}
-            setAuthorId={setAuthorId}
-            setIsMyPosts={setIsMyPosts}
-          />
-        )}
-      </main>
-      {selectedPost && (
-        <DeletePostModal
-          selectedPost={selectedPost}
-          setSelectedPost={setSelectedPost}
-          setAllCountDelete={setAllCountDelete}
-        />
+          )}
+        </div>
       )}
-    </div>
+    </>
   );
 };
 
