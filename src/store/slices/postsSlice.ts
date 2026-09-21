@@ -111,6 +111,7 @@ export const postThunk = createAsyncThunk<
   "post/fetchPosts",
   async ({ page, limit, userId, debouncedSearch }, thunkAPI) => {
     try {
+      await new Promise<void>((res) => setTimeout(() => res(), 1000));
       const postData = await axios<Post[]>(
         `https://jsonplaceholder.typicode.com/posts`,
         {

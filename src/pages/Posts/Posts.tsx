@@ -96,6 +96,7 @@ const Posts = () => {
                   viewMode={viewMode}
                   currentId={userId}
                   setSelectedPost={setSelectedPost}
+                  limit={limit}
                 />
 
                 <PostsPagination
