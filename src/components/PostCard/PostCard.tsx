@@ -2,6 +2,7 @@ import type { Post } from "../../types/dashboard";
 import classes from "./PostCard.module.css";
 import Button from "../UI/Button/Button";
 import { memo } from "react";
+import { Link } from "react-router-dom";
 
 function sliceText(str: string) {
   return str.split(/\s+/).slice(0, 22).join(" ");
@@ -25,7 +26,7 @@ const PostCard = memo(
           <div className={classes.auth__name}>{nameAuth}</div>
           {btnFlag && (
             <div className={classes.btn__wrapper}>
-              <Button>Изменить</Button>
+              <Link className={classes.btn__change} to={`/posts/${post.id}`}>Изменить</Link>
               <Button onClick={() => setSelectedPost(post)} variant="danger">
                 Удалить
               </Button>

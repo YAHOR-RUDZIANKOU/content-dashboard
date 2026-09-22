@@ -11,7 +11,6 @@ const RecentPost = () => {
       <div className={classes.posts__header}>
         <div className={classes.posts__text}>Мои последние посты</div>
         <Link className={classes.post__btn} to="/posts">
-          {" "}
           Все посты ⟶
         </Link>
       </div>

@@ -1,0 +1,20 @@
+.header__title {
+  padding: 20px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.header__active {
+  color: #5b61e5;
+}
+
+.post__wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.post__main {
+  background-color: #f4f4f4;
+  padding: 30px 20px;
+  flex-grow: 1;
+}
