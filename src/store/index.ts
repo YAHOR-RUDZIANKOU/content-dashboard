@@ -5,6 +5,7 @@ import type { TypedUseSelectorHook } from "react-redux";
 import dashboardReducer from "./slices/dashboardSlice";
 import postReducer from "./slices/postsSlice";
 import usersReducer from "./slices/usersSlice";
+import getPostIdReducer from "./slices/getPostByIdSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     dashboard: dashboardReducer,
     post: postReducer,
     users: usersReducer,
+    postId: getPostIdReducer,
   },
 });
 
