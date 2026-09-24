@@ -18,3 +18,9 @@
   padding: 30px 20px;
   flex-grow: 1;
 }
+
+.post__main {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 24px;
+}

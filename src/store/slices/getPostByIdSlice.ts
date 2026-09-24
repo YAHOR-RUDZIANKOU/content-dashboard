@@ -26,7 +26,11 @@ const initialState: initialType = {
 const getPostByIdSlice = createSlice({
   name: "postId",
   initialState,
-  reducers: {},
+  reducers: {
+    updateStatus(state) {
+      state.statusPost = "idle";
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(postIdThunk.pending, (state) => {
@@ -47,6 +51,8 @@ const getPostByIdSlice = createSlice({
 });
 
 export default getPostByIdSlice.reducer;
+
+export const { updateStatus } = getPostByIdSlice.actions;
 
 export const postIdThunk = createAsyncThunk<
   Post,

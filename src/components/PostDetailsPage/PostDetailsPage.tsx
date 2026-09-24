@@ -1,19 +1,24 @@
 import classes from "./PostDetailsPage.module.css";
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/index";
 import { postIdThunk } from "../../store/slices/getPostByIdSlice";
+import DetailsPosts from "../detailsPost/DetailsPost";
+import DeletePostModal from "../DeletePostModal/DeletePostModal";
+import { useNavigate } from "react-router-dom";
 
 const PostDetailsPage = () => {
   const { id } = useParams();
   const dispatch = useAppDispatch();
-  const status = useAppSelector((state) => state.postId.statusPost);
+
+  const detailsPost = useAppSelector((state) => state.postId.detailsPost);
+  const currentId = useAppSelector((state) => state.auth.user?.id);
+  const [deletePost, setDeletePost] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (status === "idle") {
-      dispatch(postIdThunk({ id }));
-    }
-  }, [dispatch, id, status]);
+    dispatch(postIdThunk({ id }));
+  }, [dispatch, id]);
 
   return (
     <div className={classes.post__wrapper}>
@@ -23,7 +28,24 @@ const PostDetailsPage = () => {
           {id}{" "}
         </div>
       </header>
-      <main className={classes.post__main}></main>
+      <main className={classes.post__main}>
+        <div className={classes.context__wrapper}>
+          <DetailsPosts
+            post={detailsPost}
+            btnFlag={currentId === detailsPost?.userId}
+            setDeletePost={setDeletePost}
+          />
+        </div>
+        <div className={classes.auth__wrapper}></div>
+      </main>
+
+      {deletePost && (
+        <DeletePostModal
+          selectedPost={detailsPost}
+          setDeletePost={setDeletePost}
+          onSuccessDelete={() => navigate("/posts")}
+        />
+      )}
     </div>
   );
 };

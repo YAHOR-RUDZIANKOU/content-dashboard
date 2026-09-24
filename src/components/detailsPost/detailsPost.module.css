@@ -1,0 +1,29 @@
+.btn__wrapper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.card__wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px 15px;
+  border: 1px solid #eaeaea;
+}
+
+.cards__title {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.cards__body {
+  color: #707070;
+}
+
+.btn__wrapper {
+  border-top: 1px solid #eaeaea;
+  padding-top: 4px;
+}

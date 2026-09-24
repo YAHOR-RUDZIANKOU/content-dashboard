@@ -1,7 +1,6 @@
 import { Grid2X2, Rows3 } from "lucide-react";
 import classes from "./PostFiltersPanel.module.css";
 import AuthorSelect from "../../components/authorSelect/AuthorSelect";
-import { useState } from "react";
 import { useAppSelector } from "../../store/index";
 
 type PostFiltersPanelProps = {
@@ -28,6 +27,7 @@ const PostFiltersPanel = ({
   setIsMyPosts,
 }: PostFiltersPanelProps) => {
   const userId = useAppSelector((state) => state.auth.user?.id);
+
   const handleMyPostsToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsMyPosts(e.target.checked);
     if (e.target.checked) {
@@ -36,10 +36,12 @@ const PostFiltersPanel = ({
       setAuthorId("");
     }
   };
+
   const changeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
     setPage(1);
   };
+
   return (
     <div className={classes.post__filters}>
       <div className={classes.input__search}>

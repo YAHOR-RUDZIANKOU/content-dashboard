@@ -7,17 +7,19 @@ import { useAppDispatch, useAppSelector } from "../../store/index";
 import { updateErrorDelete } from "../../store/slices/postsSlice";
 
 type selectedPostProps = {
-  selectedPost: Post;
-  setSelectedPost: (value: null | Post) => void;
-  setAllCountDelete: React.Dispatch<React.SetStateAction<number>>;
+  selectedPost: Post | null;
+  setSelectedPost?: (value: null | Post) => void;
+  setDeletePost?: React.Dispatch<React.SetStateAction<boolean>>;
+  onSuccessDelete?: () => void;
 };
 
 const DeletePostModal = ({
   selectedPost,
   setSelectedPost,
-  setAllCountDelete,
+  setDeletePost,
+  onSuccessDelete,
 }: selectedPostProps) => {
-  const textModal = selectedPost.title.split(" ").slice(0, 3).join(" ");
+  const textModal = selectedPost?.title.split(" ").slice(0, 3).join(" ");
   const dispatch = useAppDispatch();
   const errorDeletePost = useAppSelector((state) => state.post.errorDelete);
 
@@ -28,16 +30,20 @@ const DeletePostModal = ({
 
   const deletePost = async () => {
     try {
-      await dispatch(postDelete({ selectedPost })).unwrap();
-      setSelectedPost(null);
-      setAllCountDelete((prev) => prev + 1);
+      if (selectedPost) {
+        await dispatch(postDelete({ selectedPost })).unwrap();
+        setSelectedPost?.(null);
+        setDeletePost?.(false);
+        onSuccessDelete?.();
+      }
     } catch {
       console.error();
     }
   };
 
   const handleClose = () => {
-    setSelectedPost(null);
+    setSelectedPost?.(null);
+    setDeletePost?.(false);
     dispatch(updateErrorDelete());
   };
 

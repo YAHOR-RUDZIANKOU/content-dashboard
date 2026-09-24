@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { Post } from "../../types/dashboard";
 import axios from "axios";
+import { current } from "@reduxjs/toolkit";
 
 type FetchPostsArgs = {
   page: number;
@@ -27,6 +28,7 @@ type initialType = {
   postDelete: Post | null;
   errorDelete: string | null;
   indexDeletePost: number | null;
+  deletedPostIds: number[];
 };
 
 type AsyncThunk = {
@@ -43,6 +45,7 @@ const initialState: initialType = {
   postDelete: null,
   errorDelete: null,
   indexDeletePost: null,
+  deletedPostIds: [],
 };
 
 const postSlice = createSlice({
@@ -51,6 +54,10 @@ const postSlice = createSlice({
   reducers: {
     updateErrorDelete(state) {
       state.errorDelete = null;
+    },
+    updateDeletedPostIds(state) {
+      console.log(state.deletedPostIds)
+      state.deletedPostIds = [];
     },
   },
   extraReducers: (builder) => {
@@ -62,8 +69,11 @@ const postSlice = createSlice({
 
       .addCase(postThunk.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.items = action.payload.posts;
-        state.totalCount = action.payload.totalCount;
+        state.totalCount =
+          action.payload.totalCount;
+        state.items = action.payload.posts.filter(
+          (post) => !state.deletedPostIds.includes(post.id),
+        );
       })
 
       .addCase(postThunk.rejected, (state, action) => {
@@ -74,12 +84,14 @@ const postSlice = createSlice({
       .addCase(postDelete.pending, (state, action) => {
         state.statusError = "loading";
         state.postDelete = action.meta.arg.selectedPost;
+        state.deletedPostIds.push(state.postDelete.id);
         state.indexDeletePost = state.items.findIndex(
           (value) => value.id === state.postDelete?.id,
         );
         state.items = state.items.filter(
           (value) => value.id !== state.postDelete?.id,
         );
+        console.log(current(state.deletedPostIds));
       })
 
       .addCase(postDelete.fulfilled, (state) => {
@@ -99,7 +111,7 @@ const postSlice = createSlice({
   },
 });
 
-export const { updateErrorDelete } = postSlice.actions;
+export const { updateErrorDelete ,updateDeletedPostIds } = postSlice.actions;
 
 export default postSlice.reducer;
 

@@ -20,7 +20,6 @@ const Posts = () => {
   const userId = useAppSelector((state) => state.auth.user?.id);
   const totalCount = useAppSelector((state) => state.post.totalCount);
   const items = useAppSelector((state) => state.post.items);
-  const limit = 6;
   const error = useAppSelector((state) => state.post.error);
   const navigate = useNavigate();
 
@@ -28,8 +27,8 @@ const Posts = () => {
   const [authorId, setAuthorId] = useState<number | "">(userId ?? "");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [page, setPage] = useState<number>(1);
+  const [limit] = useState<number>(6);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
-  const [allCountDelete, setAllCountDelete] = useState<number>(0);
   const [isMyPosts, setIsMyPosts] = useState(true);
 
   const debouncedSearch = useDebounce(search, 1000);
@@ -41,7 +40,7 @@ const Posts = () => {
   }, [dispatch, statusUsers]);
 
   useEffect(() => {
-    if (search !== debouncedSearch) return;
+    console.log(items);
     dispatch(
       postThunk({
         page,
@@ -50,7 +49,7 @@ const Posts = () => {
         debouncedSearch,
       }),
     );
-  }, [dispatch, page, limit, authorId, debouncedSearch, search]);
+  }, [dispatch, page, limit, authorId, debouncedSearch]);
 
   return (
     <>
@@ -73,10 +72,7 @@ const Posts = () => {
         />
       ) : (
         <div className={classes.posts__wrapper}>
-          <HeaderPosts
-            totalCount={totalCount}
-            allCountDelete={allCountDelete}
-          />
+          <HeaderPosts totalCount={totalCount} />
           <main className={classes.post__main}>
             <PostFiltersPanel
               search={search}
@@ -97,6 +93,7 @@ const Posts = () => {
                   currentId={userId}
                   setSelectedPost={setSelectedPost}
                   limit={limit}
+                  setPage={setPage}
                 />
 
                 <PostsPagination
@@ -105,8 +102,6 @@ const Posts = () => {
                   totalCount={totalCount}
                   limit={limit}
                   setPage={setPage}
-                  allCountDelete={allCountDelete}
-                  setAllCountDelete={setAllCountDelete}
                 />
               </>
             ) : (
@@ -122,7 +117,6 @@ const Posts = () => {
             <DeletePostModal
               selectedPost={selectedPost}
               setSelectedPost={setSelectedPost}
-              setAllCountDelete={setAllCountDelete}
             />
           )}
         </div>

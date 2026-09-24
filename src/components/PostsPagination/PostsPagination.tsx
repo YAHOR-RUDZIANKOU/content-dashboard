@@ -2,6 +2,7 @@ import classes from "./PostsPagination.module.css";
 import Button from "../UI/Button/Button";
 import { memo } from "react";
 import type { Post } from "../../types/dashboard";
+import { useAppSelector } from "../../store";
 
 type PostsPaginationProps = {
   totalCount: number;
@@ -9,8 +10,6 @@ type PostsPaginationProps = {
   setPage: (page: number) => void;
   page: number;
   items: Post[];
-  allCountDelete: number;
-  setAllCountDelete: (value: number) => void;
 };
 const PostsPagination = ({
   totalCount,
@@ -18,26 +17,29 @@ const PostsPagination = ({
   setPage,
   page,
   items,
-  allCountDelete,
-  setAllCountDelete,
 }: PostsPaginationProps) => {
   const countBtn = Math.ceil(totalCount / limit);
+  const deletedPostIds = useAppSelector((state) => state.post.deletedPostIds);
   const allPages = Array.from({ length: countBtn }, (_, i) => i + 1);
   const visiblePages = allPages.filter(
     (value) => value + 1 >= page && value - 1 <= page,
   );
+  const deleteIdPostCount = useAppSelector(
+    (state) => state.post.deletedPostIds.length,
+  );
 
-  const startIndex = (page - 1) * limit;
+  const deletedBefore = deletedPostIds.length;
+  const startIndex = (page - 1) * limit - (page > 1 ? deletedBefore : 0);
   const startText = items.length === 0 ? 0 : startIndex + 1;
-  const endText = startIndex + items.length;
+  const endText = items.length === 0 ? 0 : startIndex + items.length;
+
   const changePage = (targetPage: number) => {
     setPage(targetPage);
-    setAllCountDelete(0);
   };
   return (
     <div className={classes.pagination__wrapper}>
       <div className={classes.pagination__text}>
-        Показано {startText}-{endText} из {totalCount - allCountDelete}
+        {`Показано ${startText}-${endText} из ${totalCount - deleteIdPostCount}`}
       </div>
       <div className={classes.pagination__btn}>
         <Button
