@@ -30,6 +30,9 @@ const getPostByIdSlice = createSlice({
     updateStatus(state) {
       state.statusPost = "idle";
     },
+    clearPostDetail(state) {
+      state.detailsPost = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -52,7 +55,7 @@ const getPostByIdSlice = createSlice({
 
 export default getPostByIdSlice.reducer;
 
-export const { updateStatus } = getPostByIdSlice.actions;
+export const { updateStatus, clearPostDetail } = getPostByIdSlice.actions;
 
 export const postIdThunk = createAsyncThunk<
   Post,
