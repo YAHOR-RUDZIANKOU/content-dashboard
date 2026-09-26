@@ -9,10 +9,13 @@ import {
 import DetailsPosts from "../detailsPost/DetailsPost";
 import DeletePostModal from "../DeletePostModal/DeletePostModal";
 import { useNavigate } from "react-router-dom";
+import { commentsIdThunk } from "../../store/slices/getPostByIdSlice";
+import DetailsComments from "../DetailsComments/DetailsComments";
 
 const PostDetailsPage = () => {
   const { id } = useParams();
   const dispatch = useAppDispatch();
+  const statusPost = useAppSelector((state) => state.postId.statusPost);
 
   const serverPost = useAppSelector((state) => state.postId.detailsPost);
   const staticPost = useAppSelector((state) =>
@@ -32,6 +35,12 @@ const PostDetailsPage = () => {
     };
   }, [dispatch, id]);
 
+  useEffect(() => {
+    if (statusPost === "succeeded") {
+      dispatch(commentsIdThunk({ id }));
+    }
+  }, [dispatch, id, statusPost]);
+
   return (
     <div className={classes.post__wrapper}>
       <header>
@@ -47,6 +56,7 @@ const PostDetailsPage = () => {
             btnFlag={currentId === detailsPost?.userId}
             setDeletePost={setDeletePost}
           />
+          <DetailsComments />
         </div>
         <div className={classes.auth__wrapper}></div>
       </main>

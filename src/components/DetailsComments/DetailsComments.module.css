@@ -1,0 +1,75 @@
+.comments__wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  background-color: white;
+  border-radius: 10px;
+  border: 1px solid #eaeaea;
+}
+
+.comments__header {
+  padding: 10px 10px 10px 20px;
+  font-size: 16px;
+  font-weight: 700;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.add__comment {
+  flex-grow: 1;
+  padding: 15px 15px 15px 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.comments__title {
+  font-weight: 700;
+}
+
+.comments__form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  gap: 5px;
+  flex-grow: 1;
+}
+
+.input__wrappers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.general {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  background-color: white;
+  color: #707070;
+  outline: none;
+  resize: none;
+}
+
+.btn__wrapper {
+  display: flex;
+  justify-content: end;
+}
+
+.comments__form textarea {
+  flex-grow: 1;
+}
+
+.error__input {
+  color: red;
+  font-size: 13px;
+}
+
+.textarea__wrapper {
+  flex-grow: 1;
+}
+
+.textarea__error {
+  border: 1px solid red;
+}

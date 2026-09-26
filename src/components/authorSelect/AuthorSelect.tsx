@@ -1,5 +1,5 @@
 import classes from "./authorSelect.module.css";
-import { useAppSelector, useAppDispatch } from "../../store/index";
+import { useAppSelector } from "../../store/index";
 import { usersSelectors } from "../../store/slices/Selectors/usersSelectors";
 import { ChevronDown } from "lucide-react";
 import { memo } from "react";
