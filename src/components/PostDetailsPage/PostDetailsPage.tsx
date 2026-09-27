@@ -11,6 +11,7 @@ import DeletePostModal from "../DeletePostModal/DeletePostModal";
 import { useNavigate } from "react-router-dom";
 import { commentsIdThunk } from "../../store/slices/getPostByIdSlice";
 import DetailsComments from "../DetailsComments/DetailsComments";
+import AuthInfo from "../../components/authInfo/AuthInfo";
 
 const PostDetailsPage = () => {
   const { id } = useParams();
@@ -58,7 +59,7 @@ const PostDetailsPage = () => {
           />
           <DetailsComments />
         </div>
-        <div className={classes.auth__wrapper}></div>
+        <AuthInfo />
       </main>
 
       {deletePost && (
