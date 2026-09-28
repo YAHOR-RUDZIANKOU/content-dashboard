@@ -20,12 +20,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 25px;
-  height: 25px;
+  width: 35px;
+  height: 30px;
   border-radius: 5px;
   color: #ff4d4f;
   border: 1px solid #ffa39e;
   background-color: #ffa39e;
+  font-size: 15px;
 }
 
 .error__title {
@@ -33,11 +34,16 @@
   font-weight: 600;
 }
 
-.btn__wrapper {
+.btns__wrapper {
   display: flex;
   gap: 5px;
 }
 
 .error__subtitle {
   text-align: center;
+}
+
+.btn__wrapper{
+  display: flex;
+  justify-content: center;
 }

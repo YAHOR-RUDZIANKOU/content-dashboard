@@ -12,11 +12,16 @@ import { useNavigate } from "react-router-dom";
 import { commentsIdThunk } from "../../store/slices/getPostByIdSlice";
 import DetailsComments from "../DetailsComments/DetailsComments";
 import AuthInfo from "../../components/authInfo/AuthInfo";
+import SkeletonCard from "../Skeleton/SkeletonCard/SkeletonCard";
+import PostDetailErrorBoundary from "../PostDetailErrorBoundary/PostDetailErrorBoundary";
+import ErrorState from "../../components/ErrorState/ErrorState";
 
 const PostDetailsPage = () => {
   const { id } = useParams();
   const dispatch = useAppDispatch();
   const statusPost = useAppSelector((state) => state.postId.statusPost);
+  const statusComments = useAppSelector((state) => state.postId.statusComments);
+  const errorComment = useAppSelector((state) => state.postId.errorComment);
 
   const serverPost = useAppSelector((state) => state.postId.detailsPost);
   const staticPost = useAppSelector((state) =>
@@ -27,6 +32,24 @@ const PostDetailsPage = () => {
   const currentId = useAppSelector((state) => state.auth.user?.id);
   const [deletePost, setDeletePost] = useState(false);
   const navigate = useNavigate();
+
+  let commentContent;
+  if (statusComments === "loading" || statusComments === "idle") {
+    commentContent = <SkeletonCard />;
+  } else if (errorComment) {
+    commentContent = (
+      <ErrorState
+        title="Не удалось загрузить комментарии"
+        subtitle={errorComment.message || "Ошибка сети"}
+        btnText="Обновить комментарии"
+        onBack={() => dispatch(commentsIdThunk({ id }))}
+        flag={false}
+        icon="!"
+      />
+    );
+  } else {
+    commentContent = <DetailsComments />;
+  }
 
   useEffect(() => {
     dispatch(postIdThunk({ id }));
@@ -43,33 +66,40 @@ const PostDetailsPage = () => {
   }, [dispatch, id, statusPost]);
 
   return (
-    <div className={classes.post__wrapper}>
-      <header>
-        <div className={classes.header__title}>
-          <span className={classes.header__active}>Посты</span> / Пост #
-          {id}{" "}
-        </div>
-      </header>
-      <main className={classes.post__main}>
-        <div className={classes.context__wrapper}>
-          <DetailsPosts
-            post={detailsPost}
-            btnFlag={currentId === detailsPost?.userId}
-            setDeletePost={setDeletePost}
-          />
-          <DetailsComments />
-        </div>
-        <AuthInfo />
-      </main>
+    <PostDetailErrorBoundary id={id ?? ""}>
+      <div className={classes.post__wrapper}>
+        <header>
+          <div className={classes.header__title}>
+            <span className={classes.header__active}>Посты</span> / Пост #
+            {id}{" "}
+          </div>
+        </header>
+        <main className={classes.post__main}>
+          <div className={classes.context__wrapper}>
+            {statusPost === "loading" && !staticPost ? (
+              <SkeletonCard />
+            ) : (
+              <DetailsPosts
+                post={detailsPost}
+                btnFlag={currentId === detailsPost?.userId}
+                setDeletePost={setDeletePost}
+              />
+            )}
 
-      {deletePost && (
-        <DeletePostModal
-          selectedPost={detailsPost}
-          setDeletePost={setDeletePost}
-          onSuccessDelete={() => navigate("/posts")}
-        />
-      )}
-    </div>
+            {commentContent}
+          </div>
+          <AuthInfo />
+        </main>
+
+        {deletePost && (
+          <DeletePostModal
+            selectedPost={detailsPost}
+            setDeletePost={setDeletePost}
+            onSuccessDelete={() => navigate("/posts")}
+          />
+        )}
+      </div>
+    </PostDetailErrorBoundary>
   );
 };
 

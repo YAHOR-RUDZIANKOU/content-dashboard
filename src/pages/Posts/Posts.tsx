@@ -40,7 +40,6 @@ const Posts = () => {
   }, [dispatch, statusUsers]);
 
   useEffect(() => {
-    console.log(items);
     dispatch(
       postThunk({
         page,
@@ -56,6 +55,8 @@ const Posts = () => {
       {error ? (
         <ErrorState
           title="Не смогли загрузить посты"
+          flag={true}
+          icon='!'
           subtitle={`Сервер ответил ${error.status}. Ничего страшного - попробуем еще раз`}
           btnText="На дашборд"
           onBack={() => navigate("/")}
