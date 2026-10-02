@@ -8,7 +8,7 @@ type ErrorStateProps = {
   onBack: () => void;
   onRetry?: () => void;
   flag: boolean;
-  icon:string;
+  icon: string;
 };
 
 const ErrorState = ({
@@ -18,7 +18,7 @@ const ErrorState = ({
   onBack,
   onRetry,
   flag,
-  icon
+  icon,
 }: ErrorStateProps) => {
   return (
     <div className={classes.error__wrapper}>
@@ -28,14 +28,16 @@ const ErrorState = ({
         <div className={classes.error__subtitle}>{subtitle}</div>
         {flag ? (
           <div className={classes.btns__wrapper}>
+            <Button onClick={onBack}>{btnText}</Button>
             <Button onClick={onRetry} variant="primary">
               Повторить
             </Button>
-            <Button onClick={onBack}>{btnText}</Button>
           </div>
         ) : (
           <div className={classes.btn__wrapper}>
-            <Button onClick={onBack} variant="primary">{btnText}</Button>
+            <Button onClick={onBack} variant="primary">
+              {btnText}
+            </Button>
           </div>
         )}
       </div>

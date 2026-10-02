@@ -7,6 +7,8 @@ import MainLayout from "../components/layout/MainLayout";
 import Posts from "../pages/Posts/Posts";
 import Todos from "../pages/Todos/Todos";
 import PostDetailsPage from "../components/PostDetailsPage/PostDetailsPage";
+import FormPost from "../components/FormPost/FormPost";
+
 const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -31,6 +33,8 @@ const AppRouter = () => {
           <Route path="/posts" element={<Posts />} />
           <Route path="/todos" element={<Todos />} />
           <Route path="/posts/:id" element={<PostDetailsPage />} />
+          <Route path="/posts/new" element={<FormPost />} />
+          <Route path="/posts/:id/edit" element={<FormPost />} />
         </Route>
       </Routes>
     </BrowserRouter>

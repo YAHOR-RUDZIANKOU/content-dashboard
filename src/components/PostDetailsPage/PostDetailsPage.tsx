@@ -22,13 +22,23 @@ const PostDetailsPage = () => {
   const statusPost = useAppSelector((state) => state.postId.statusPost);
   const statusComments = useAppSelector((state) => state.postId.statusComments);
   const errorComment = useAppSelector((state) => state.postId.errorComment);
+  
 
   const serverPost = useAppSelector((state) => state.postId.detailsPost);
+  const editServerPost = useAppSelector((state) =>
+    state.post.editPost.find((post) => post.id === serverPost?.id),
+  );
+  const finalServerPost = editServerPost ? editServerPost : serverPost;
+
   const staticPost = useAppSelector((state) =>
     state.post.items.find((post) => post.id === Number(id)),
   );
+  const editStaticPost = useAppSelector((state) =>
+    state.post.editPost.find((post) => post.id === Number(id)),
+  );
+  const finalStaticPost = editStaticPost ? editStaticPost : staticPost;
 
-  const detailsPost = serverPost ?? staticPost ?? null;
+  const detailsPost = finalServerPost ?? finalStaticPost ?? null;
   const currentId = useAppSelector((state) => state.auth.user?.id);
   const [deletePost, setDeletePost] = useState(false);
   const navigate = useNavigate();
@@ -85,7 +95,6 @@ const PostDetailsPage = () => {
                 setDeletePost={setDeletePost}
               />
             )}
-
             {commentContent}
           </div>
           <AuthInfo />

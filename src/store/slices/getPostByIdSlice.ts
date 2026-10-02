@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import type { Post, Comments } from "../../types/dashboard";
+import type { RootState } from "../../store";
 
 type FetchPostsArgs = {
   id: string | undefined;
@@ -95,6 +96,16 @@ export const postIdThunk = createAsyncThunk<
   { rejectValue: PostError }
 >("postId/fetchPostId", async ({ id }, thunkAPI) => {
   try {
+    const numericId = Number(id);
+    if (numericId > 150) {
+      const rootState = thunkAPI.getState() as RootState;
+      const resultPost = rootState.post.createPost.find(
+        (currentPost) => currentPost.id === numericId,
+      );
+      if (resultPost) {
+        return resultPost;
+      }
+    }
     await new Promise<void>((res) => setTimeout(() => res(), 1000));
     const postId = await axios<Post>(
       `https://jsonplaceholder.typicode.com/posts/${id}`,

@@ -12,12 +12,14 @@
 .card__title {
   color: black;
   font-weight: 500;
+  overflow-wrap: break-word;
 }
 
 .card__text {
   color: #707070;
   flex-grow: 1;
   border-bottom: 1px solid #eaeaea;
+  overflow-wrap: break-word;
 }
 
 .auth__name {

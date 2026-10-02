@@ -1,0 +1,93 @@
+.post__wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.postForm__wrapper {
+  flex-grow: 1;
+  background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 25px 0px;
+}
+
+.header__wrapper {
+  padding: 20px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.active__title {
+  color: #5b61e5;
+}
+
+.postForm__inner {
+  max-width: 800px;
+  /* height: 100%; */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.postForm__text {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.postForm__title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.postForm__flag {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px;
+  background-color: #ebebeb;
+  border-radius: 10px;
+}
+
+.general {
+  background-color: white;
+  color: black !important;
+}
+
+.postForm_new {
+  padding: 4px;
+  color: #7f7f7f;
+  border-radius: 10px;
+}
+
+.formPostCard__thirdBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.successPost__wrapper {
+  padding: 7px;
+  background-color: #1a1a1a;
+  font-size: 15px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+}
+
+.successPost__icons {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background-color: #34a853;
+}
+
+.successPost__container{
+  display: flex;
+  justify-content: end;
+}

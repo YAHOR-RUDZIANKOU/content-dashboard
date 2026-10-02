@@ -20,3 +20,15 @@
   font-size: 18px;
   font-weight: 600;
 }
+
+.btn__change {
+  padding: 5px;
+  background-color: #3b46c4;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+}
+
+.btn__change :hover {
+  background-color: #2e379b;
+}

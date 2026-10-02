@@ -1,6 +1,7 @@
 import classes from "./headerPost.module.css";
-import Button from "../UI/Button/Button";
 import { useAppSelector } from "../../store/index";
+import { Link } from "react-router-dom";
+
 type HeaderPostsProps = {
   totalCount: number;
 };
@@ -17,9 +18,9 @@ const HeaderPosts = ({ totalCount }: HeaderPostsProps) => {
           className={classes.post__count}
         >{`${totalCount - deleteIdPostCount} всего`}</div>
       </div>
-      <Button variant="primary" size="md">
+      <Link className={classes.btn__change} to={'/posts/new'} >
         + Создать пост
-      </Button>
+      </Link>
     </header>
   );
 };
