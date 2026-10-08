@@ -6,6 +6,7 @@ import dashboardReducer from "./slices/dashboardSlice";
 import postReducer from "./slices/postsSlice";
 import usersReducer from "./slices/usersSlice";
 import getPostIdReducer from "./slices/getPostByIdSlice";
+import todosReducer from "./slices/todosSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     post: postReducer,
     users: usersReducer,
     postId: getPostIdReducer,
+    todos: todosReducer,
   },
 });
 

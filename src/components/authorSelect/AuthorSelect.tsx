@@ -7,13 +7,15 @@ import { memo } from "react";
 type AuthorSelectProps = {
   authorId: string | number;
   setAuthorId: (value: number | "") => void;
-  setIsMyPosts: (value: boolean) => void;
-  setPage: (value: number) => void;
+  title: string;
+  setIsMyPosts?: (value: boolean) => void;
+  setPage?: (value: number) => void;
 };
 
 const AuthorSelect = ({
   authorId,
   setAuthorId,
+  title,
   setIsMyPosts,
   setPage,
 }: AuthorSelectProps) => {
@@ -24,11 +26,13 @@ const AuthorSelect = ({
     const selectedValue = e.target.value;
     const parsedValue = selectedValue === "" ? "" : Number(selectedValue);
     setAuthorId(parsedValue);
-    setPage(1);
-    if (parsedValue !== currentId) {
-      setIsMyPosts(false);
-    } else {
-      setIsMyPosts(true);
+    if (setIsMyPosts && setPage) {
+      setPage(1);
+      if (parsedValue !== currentId) {
+        setIsMyPosts(false);
+      } else {
+        setIsMyPosts(true);
+      }
     }
   };
 
@@ -39,9 +43,11 @@ const AuthorSelect = ({
         value={authorId}
         onChange={(e) => handleAuthorChange(e)}
       >
-        <option value="">Все авторы</option>
+        <option value="">{title}</option>
         {selectItems.map((item) => (
-          <option key={item.id} value={item.id}>{`Автор: ${item.name}`}</option>
+          <option key={item.id} value={item.id}>
+            {item.name}
+          </option>
         ))}
       </select>
       <ChevronDown className={classes.arrows} />

@@ -58,6 +58,7 @@ const PostFiltersPanel = ({
         setAuthorId={setAuthorId}
         setIsMyPosts={setIsMyPosts}
         setPage={setPage}
+        title="Все авторы"
       />
       <label className={classes.label__toggle}>
         <input

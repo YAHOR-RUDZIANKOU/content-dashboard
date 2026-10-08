@@ -8,10 +8,12 @@ import Posts from "../pages/Posts/Posts";
 import Todos from "../pages/Todos/Todos";
 import PostDetailsPage from "../components/PostDetailsPage/PostDetailsPage";
 import FormPost from "../components/FormPost/FormPost";
+import { Toaster } from "react-hot-toast";
 
 const AppRouter = () => {
   return (
     <BrowserRouter>
+      <Toaster position="top-right" reverseOrder={false} />
       <Routes>
         <Route
           path="/login"
