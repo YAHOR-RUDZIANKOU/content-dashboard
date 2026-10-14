@@ -6,12 +6,14 @@ type initialType = {
   items: User[];
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
+  usersMap: Record<number, string>;
 };
 
 const initialState: initialType = {
   items: [],
   status: "idle",
   error: null,
+  usersMap: {},
 };
 
 const userSlice = createSlice({
@@ -28,6 +30,11 @@ const userSlice = createSlice({
       .addCase(usersThunk.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.items = action.payload;
+        const userCurrent: Record<number, string> = {};
+        action.payload.forEach((user) => {
+          userCurrent[user.id] = user.name;
+        });
+        state.usersMap = userCurrent;
       })
 
       .addCase(usersThunk.rejected, (state, action) => {

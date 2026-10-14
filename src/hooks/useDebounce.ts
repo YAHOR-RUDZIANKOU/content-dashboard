@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 const useDebounce = (search: string, ms: number) => {
   const [debounceSearch, setDebounceSearch] = useState("");
+
   useEffect(() => {
     const delay = search === "" ? 0 : ms;
     const setId = setTimeout(() => {

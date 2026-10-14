@@ -9,6 +9,7 @@ import Todos from "../pages/Todos/Todos";
 import PostDetailsPage from "../components/PostDetailsPage/PostDetailsPage";
 import FormPost from "../components/FormPost/FormPost";
 import { Toaster } from "react-hot-toast";
+import Albums from "../components/Albums/Albums";
 
 const AppRouter = () => {
   return (
@@ -37,6 +38,7 @@ const AppRouter = () => {
           <Route path="/posts/:id" element={<PostDetailsPage />} />
           <Route path="/posts/new" element={<FormPost />} />
           <Route path="/posts/:id/edit" element={<FormPost />} />
+          <Route path="/albums" element={<Albums />} />
         </Route>
       </Routes>
     </BrowserRouter>

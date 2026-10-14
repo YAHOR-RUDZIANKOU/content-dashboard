@@ -26,8 +26,10 @@ const AuthorSelect = ({
     const selectedValue = e.target.value;
     const parsedValue = selectedValue === "" ? "" : Number(selectedValue);
     setAuthorId(parsedValue);
-    if (setIsMyPosts && setPage) {
+    if (setPage) {
       setPage(1);
+    }
+    if (setIsMyPosts) {
       if (parsedValue !== currentId) {
         setIsMyPosts(false);
       } else {

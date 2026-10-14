@@ -40,6 +40,9 @@ const Posts = () => {
   }, [dispatch, statusUsers]);
 
   useEffect(() => {
+    // if (search === "" && debouncedSearch !== "") {
+    //   return;
+    // }
     dispatch(
       postThunk({
         page,
@@ -56,7 +59,7 @@ const Posts = () => {
         <ErrorState
           title="Не смогли загрузить посты"
           flag={true}
-          icon='!'
+          icon="!"
           subtitle={`Сервер ответил ${error.status}. Ничего страшного - попробуем еще раз`}
           btnText="На дашборд"
           onBack={() => navigate("/")}

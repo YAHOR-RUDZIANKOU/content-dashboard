@@ -1,7 +1,7 @@
 import classes from "./PostsPagination.module.css";
 import Button from "../UI/Button/Button";
 import { memo } from "react";
-import type { Post } from "../../types/dashboard";
+import type { Post , Album} from "../../types/dashboard";
 import { useAppSelector } from "../../store";
 
 type PostsPaginationProps = {
@@ -9,7 +9,7 @@ type PostsPaginationProps = {
   limit: number;
   setPage: (page: number) => void;
   page: number;
-  items: Post[];
+  items: Post[] | Album[];
 };
 const PostsPagination = ({
   totalCount,

@@ -6,7 +6,7 @@ type EmptyStateProps = {
   search: string;
   setSearch: (value: string) => void;
   setAuthorId: (value: number | "") => void;
-  setIsMyPosts: (value: boolean) => void;
+  setIsMyPosts?: (value: boolean) => void;
 };
 
 const EmptyState = ({
@@ -15,12 +15,15 @@ const EmptyState = ({
   setAuthorId,
   setIsMyPosts,
 }: EmptyStateProps) => {
-  const userName = useAppSelector((state) => state.auth.user?.name);
   const userId = useAppSelector((state) => state.auth.user?.id);
   const clearFilters = () => {
     setSearch("");
-    setAuthorId(userId ?? "");
-    setIsMyPosts(true);
+    if (setIsMyPosts) {
+      setIsMyPosts(true);
+      setAuthorId(userId ?? "");
+    } else {
+      setAuthorId("");
+    }
   };
   return (
     <div className={classes.empty__wrapper}>
@@ -29,7 +32,7 @@ const EmptyState = ({
         <div className={classes.empty__title}>Ничего не найдено</div>
         <div
           className={classes.empty__subtitle}
-        >{`По запросу ${search} у автора ${userName} постов нет. Попробуйте снять часть фильтров`}</div>
+        >{`По запросу ${search}  постов нет. Попробуйте снять часть фильтров`}</div>
         <Button onClick={() => clearFilters()} className={classes.empty__btn}>
           Сбросить фильтры
         </Button>
