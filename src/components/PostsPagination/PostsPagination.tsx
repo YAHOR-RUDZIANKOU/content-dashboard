@@ -1,7 +1,7 @@
 import classes from "./PostsPagination.module.css";
 import Button from "../UI/Button/Button";
 import { memo } from "react";
-import type { Post , Album} from "../../types/dashboard";
+import type { Post, Album, Photos } from "../../types/dashboard";
 import { useAppSelector } from "../../store";
 
 type PostsPaginationProps = {
@@ -9,7 +9,7 @@ type PostsPaginationProps = {
   limit: number;
   setPage: (page: number) => void;
   page: number;
-  items: Post[] | Album[];
+  items: Post[] | Album[] | Photos[];
 };
 const PostsPagination = ({
   totalCount,
@@ -20,6 +20,7 @@ const PostsPagination = ({
 }: PostsPaginationProps) => {
   const countBtn = Math.ceil(totalCount / limit);
   const deletedPostIds = useAppSelector((state) => state.post.deletedPostIds);
+
   const allPages = Array.from({ length: countBtn }, (_, i) => i + 1);
   const visiblePages = allPages.filter(
     (value) => value + 1 >= page && value - 1 <= page,

@@ -46,7 +46,6 @@ const PostList = ({
         <div className={classes.empty__wrapper}>
           <div className={classes.empty__inner}>
             <div className={classes.empty__list}>
-              {" "}
               На данной странице больше нет постов
             </div>
             <Button className={classes.btn__change} onClick={() => backPosts()}>
