@@ -12,6 +12,7 @@ import { Toaster } from "react-hot-toast";
 import Albums from "../components/Albums/Albums";
 import AlbumPhotos from "../pages/AlbumPhotos/AlbumPhotos";
 import Users from "../pages/Users/Users";
+import DetailsUser from "../pages/DetailsUser/DetailsUser";
 
 const AppRouter = () => {
   return (
@@ -43,6 +44,7 @@ const AppRouter = () => {
           <Route path="/albums" element={<Albums />} />
           <Route path="/albums/:id" element={<AlbumPhotos />} />
           <Route path="/users" element={<Users />} />
+          <Route path="/users/:id" element={<DetailsUser />} />
         </Route>
       </Routes>
     </BrowserRouter>

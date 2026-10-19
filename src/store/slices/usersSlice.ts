@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import type { User } from "../../types/user";
+import type { RootState } from "../index";
 
 type initialType = {
   items: User[];
@@ -29,6 +30,7 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(usersThunk.pending, (state) => {
+        console.log("загрузка загрузка загрузка");
         state.status = "loading";
         state.error = null;
       })
@@ -58,14 +60,26 @@ export const usersThunk = createAsyncThunk<
   User[],
   void,
   { rejectValue: string }
->("users/fetchUsers", async (_, thunkAPI) => {
-  try {
-    const usersData = await axios<User[]>(
-      "https://jsonplaceholder.typicode.com/users",
-    );
-    return usersData.data;
-  } catch (e: unknown) {
-    const errorMessage = e instanceof Error ? e.message : "Неизвестная ошибка";
-    return thunkAPI.rejectWithValue(errorMessage);
-  }
-});
+>(
+  "users/fetchUsers",
+  async (_, thunkAPI) => {
+    try {
+      const usersData = await axios<User[]>(
+        "https://jsonplaceholder.typicode.com/users",
+      );
+      return usersData.data;
+    } catch (e: unknown) {
+      const errorMessage =
+        e instanceof Error ? e.message : "Неизвестная ошибка";
+      return thunkAPI.rejectWithValue(errorMessage);
+    }
+  },
+  {
+    condition: (_, thunkAPI) => {
+      const state = thunkAPI.getState() as RootState;
+      if (state.users.items.length > 0) {
+        return false;
+      }
+    },
+  },
+);

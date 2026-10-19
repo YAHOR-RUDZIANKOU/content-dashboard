@@ -5,6 +5,7 @@ import { usersThunk } from "../../store/slices/usersSlice";
 import useDebounce from "../../hooks/useDebounce";
 import { changeSearchStr } from "../../store/slices/usersSlice";
 import searchUser from "../../store/slices/Selectors/selectFilteredUsers";
+import { Link } from "react-router-dom";
 
 const Users = () => {
   const currentInput = useAppSelector((state) => state.users.searchStr);
@@ -55,7 +56,12 @@ const Users = () => {
                 className={`${classes.table__items} ${currentId === value.id ? classes.table__active : ""}`}
               >
                 <div className={classes.table__row}>
-                  <span className={classes.user__name}>{value.name}</span>
+                  <Link
+                    to={`/users/${value.id}`}
+                    className={classes.user__name}
+                  >
+                    {value.name}
+                  </Link>
                   <span>{value.username}</span>
                   <span>{value.email}</span>
                   <span>{value.phone}</span>
