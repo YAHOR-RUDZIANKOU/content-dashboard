@@ -5,8 +5,13 @@ export type User = {
   email: string;
   phone: string;
   company: CompanyInfo;
+  address: Address;
 };
 
 type CompanyInfo = {
   name: string;
+};
+
+type Address = {
+  city: string;
 };

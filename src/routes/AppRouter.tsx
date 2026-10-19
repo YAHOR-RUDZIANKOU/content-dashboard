@@ -11,6 +11,7 @@ import FormPost from "../components/FormPost/FormPost";
 import { Toaster } from "react-hot-toast";
 import Albums from "../components/Albums/Albums";
 import AlbumPhotos from "../pages/AlbumPhotos/AlbumPhotos";
+import Users from "../pages/Users/Users";
 
 const AppRouter = () => {
   return (
@@ -41,6 +42,7 @@ const AppRouter = () => {
           <Route path="/posts/:id/edit" element={<FormPost />} />
           <Route path="/albums" element={<Albums />} />
           <Route path="/albums/:id" element={<AlbumPhotos />} />
+          <Route path="/users" element={<Users />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -7,6 +7,7 @@ type initialType = {
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
   usersMap: Record<number, string>;
+  searchStr: string;
 };
 
 const initialState: initialType = {
@@ -14,12 +15,17 @@ const initialState: initialType = {
   status: "idle",
   error: null,
   usersMap: {},
+  searchStr: "",
 };
 
 const userSlice = createSlice({
   name: "users",
   initialState,
-  reducers: {},
+  reducers: {
+    changeSearchStr: (state, action) => {
+      state.searchStr = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(usersThunk.pending, (state) => {
@@ -43,6 +49,8 @@ const userSlice = createSlice({
       });
   },
 });
+
+export const { changeSearchStr } = userSlice.actions;
 
 export default userSlice.reducer;
 
