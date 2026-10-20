@@ -56,7 +56,7 @@ const userSlice = createSlice({
   },
 });
 
-export const { changeSearchStr ,toggleCurrentSort } = userSlice.actions;
+export const { changeSearchStr, toggleCurrentSort } = userSlice.actions;
 
 export default userSlice.reducer;
 
@@ -68,6 +68,7 @@ export const usersThunk = createAsyncThunk<
   "users/fetchUsers",
   async (_, thunkAPI) => {
     try {
+      await new Promise<void>((res) => setTimeout(() => res(), 1000));
       const usersData = await axios<User[]>(
         "https://jsonplaceholder.typicode.com/users",
       );
