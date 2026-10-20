@@ -9,6 +9,7 @@ type initialType = {
   error: string | null;
   usersMap: Record<number, string>;
   searchStr: string;
+  currentSort: "asc" | "desc";
 };
 
 const initialState: initialType = {
@@ -17,6 +18,7 @@ const initialState: initialType = {
   error: null,
   usersMap: {},
   searchStr: "",
+  currentSort: "asc",
 };
 
 const userSlice = createSlice({
@@ -26,11 +28,13 @@ const userSlice = createSlice({
     changeSearchStr: (state, action) => {
       state.searchStr = action.payload;
     },
+    toggleCurrentSort: (state) => {
+      state.currentSort = state.currentSort === "asc" ? "desc" : "asc";
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(usersThunk.pending, (state) => {
-        console.log("загрузка загрузка загрузка");
         state.status = "loading";
         state.error = null;
       })
@@ -52,7 +56,7 @@ const userSlice = createSlice({
   },
 });
 
-export const { changeSearchStr } = userSlice.actions;
+export const { changeSearchStr ,toggleCurrentSort } = userSlice.actions;
 
 export default userSlice.reducer;
 

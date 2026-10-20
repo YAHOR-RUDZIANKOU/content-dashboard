@@ -3,7 +3,10 @@ import { useAppSelector, useAppDispatch } from "../../store/index";
 import { useEffect, useState } from "react";
 import { usersThunk } from "../../store/slices/usersSlice";
 import useDebounce from "../../hooks/useDebounce";
-import { changeSearchStr } from "../../store/slices/usersSlice";
+import {
+  changeSearchStr,
+  toggleCurrentSort,
+} from "../../store/slices/usersSlice";
 import searchUser from "../../store/slices/Selectors/selectFilteredUsers";
 import { Link } from "react-router-dom";
 
@@ -13,6 +16,7 @@ const Users = () => {
   const dispatch = useAppDispatch();
   const currentId = useAppSelector((state) => state.auth.user?.id);
   const debounceInput = useDebounce(value, 1000);
+  const currentSort = useAppSelector((state) => state.users.currentSort);
 
   useEffect(() => {
     dispatch(changeSearchStr(debounceInput));
@@ -41,7 +45,9 @@ const Users = () => {
         <ul className={classes.users__container}>
           <li className={classes.table__header}>
             <div className={classes.table__row}>
-              <span className={classes.user__name}>Имя</span>
+              <span onClick={() => dispatch(toggleCurrentSort())} className={classes.user__name}>
+                Имя {currentSort === "asc" ? "▲" : "▼"}
+              </span>
               <span>Username</span>
               <span>Email</span>
               <span>Телефон</span>
