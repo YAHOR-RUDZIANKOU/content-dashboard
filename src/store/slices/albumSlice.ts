@@ -2,6 +2,10 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import type { Album } from "../../types/dashboard";
 
+type userAlbumArg = {
+  userId: string | undefined;
+};
+
 type photoItems = {
   albumId: number;
   id: number;
@@ -31,6 +35,10 @@ type initialStateProps = {
   albums: Album[];
   totalCount: number;
   allPhoto: Record<number, number>;
+
+  userTabAlbumStatus: "idle" | "loading" | "succeeded" | "failed";
+  userTabAlbumsError: PostError | null;
+  userAlbumItems: Album[];
 };
 
 const initialState: initialStateProps = {
@@ -39,12 +47,22 @@ const initialState: initialStateProps = {
   albums: [],
   totalCount: 0,
   allPhoto: {},
+
+  userTabAlbumStatus: "idle",
+  userTabAlbumsError: null,
+  userAlbumItems: [],
 };
 
 const albumSlice = createSlice({
   name: "albums",
   initialState,
-  reducers: {},
+  reducers: {
+    resetAlbumsTab: (state) => {
+      state.userTabAlbumStatus = "idle";
+      state.userTabAlbumsError = null;
+      state.userAlbumItems = [];
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(albumsThunk.pending, (state) => {
@@ -77,9 +95,26 @@ const albumSlice = createSlice({
           currentObj[photo.albumId] = (currentObj[photo.albumId] ?? 0) + 1;
         });
         state.allPhoto = currentObj;
+      })
+
+      .addCase(fetchUserAlbumsThunk.pending, (state) => {
+        state.userTabAlbumStatus = "loading";
+        state.userTabAlbumsError = null;
+      })
+      .addCase(fetchUserAlbumsThunk.fulfilled, (state, action) => {
+        state.userTabAlbumStatus = "succeeded";
+        state.userAlbumItems = action.payload;
+      })
+      .addCase(fetchUserAlbumsThunk.rejected, (state, action) => {
+        state.userTabAlbumStatus = "failed";
+        state.userTabAlbumsError = action.payload ?? {
+          message: "Неизвестная ошибка",
+        };
       });
   },
 });
+
+export const { resetAlbumsTab } = albumSlice.actions;
 
 export default albumSlice.reducer;
 
@@ -114,6 +149,31 @@ export const albumsThunk = createAsyncThunk<
     }
   },
 );
+
+export const fetchUserAlbumsThunk = createAsyncThunk<
+  Album[],
+  userAlbumArg,
+  { rejectValue: PostError }
+>("albums/fetchUserAlbums", async ({ userId }, thunkAPI) => {
+  try {
+    await new Promise<void>((res) => setTimeout(() => res(), 1000));
+    const albumsData = await axios(
+      "https://jsonplaceholder.typicode.com/albums",
+      {
+        params: {
+          userId: userId,
+        },
+      },
+    );
+    return albumsData.data;
+  } catch (e: unknown) {
+    const errorMessage = e instanceof Error ? e.message : "Неизвестная ошибка";
+    return thunkAPI.rejectWithValue({
+      message: errorMessage,
+      status: axios.isAxiosError(e) ? e.response?.status : undefined,
+    });
+  }
+});
 
 // делаем запрос, чтобы узнать общее кол-во элементов в массиве Albums
 export const fetchAlbumsCountThunk = createAsyncThunk(

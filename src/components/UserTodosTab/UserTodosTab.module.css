@@ -1,0 +1,17 @@
+.posTab__item {
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.liElement__wrapper {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.liElement__title {
+  font-weight: 500;
+}

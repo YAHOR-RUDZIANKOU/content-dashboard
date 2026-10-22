@@ -9,6 +9,7 @@ import getPostIdReducer from "./slices/getPostByIdSlice";
 import todosReducer from "./slices/todosSlice";
 import albumsReducer from "./slices/albumSlice";
 import albumPhotosReducer from "./slices/albumPhotosSelectors";
+import commentsReducer from "./slices/commentsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ export const store = configureStore({
     todos: todosReducer,
     albums: albumsReducer,
     albumPhotos: albumPhotosReducer,
+    comments: commentsReducer,
   },
 });
 

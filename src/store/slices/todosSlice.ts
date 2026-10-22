@@ -1,7 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import type { Todo } from "../../types/dashboard";
-import { current } from "@reduxjs/toolkit";
+
+type userTodosArg = {
+  userId: string | undefined;
+};
 
 type updateTodoArg = {
   id: number;
@@ -27,6 +30,10 @@ type initialStateType = {
 
   statusUpdate: "idle" | "loading" | "succeeded" | "failed";
   errorUpdate: PostError | null;
+
+  userTabTodosStatus: "idle" | "loading" | "succeeded" | "failed";
+  userTabTodosError: PostError | null;
+  userTodoItems: Todo[];
 };
 
 const initialState: initialStateType = {
@@ -39,6 +46,10 @@ const initialState: initialStateType = {
 
   statusUpdate: "idle",
   errorUpdate: null,
+
+  userTabTodosStatus: "idle",
+  userTabTodosError: null,
+  userTodoItems: [],
 };
 
 const todoSlice = createSlice({
@@ -61,11 +72,15 @@ const todoSlice = createSlice({
       } else {
         state.modifiedTodoIds.splice(indexId, 1);
       }
-      console.log(current(state.modifiedTodoIds));
     },
     addNewPost: (state, action) => {
       state.newTodo.unshift(action.payload);
       state.todosArr.unshift(action.payload);
+    },
+    resetTodosTab: (state) => {
+      state.userTabTodosStatus = "idle";
+      state.userTabTodosError = null;
+      state.userTodoItems = [];
     },
   },
   extraReducers: (builder) => {
@@ -96,7 +111,7 @@ const todoSlice = createSlice({
         state.statusUpdate = "loading";
         state.errorUpdate = null;
       })
-      .addCase(updateTodo.fulfilled, (state, action) => {
+      .addCase(updateTodo.fulfilled, (state) => {
         state.statusUpdate = "succeeded";
       })
       .addCase(updateTodo.rejected, (state, action) => {
@@ -104,11 +119,27 @@ const todoSlice = createSlice({
         state.errorUpdate = action.payload ?? {
           message: "Неизвестная ошибка",
         };
+      })
+
+      .addCase(fetchUserTodosThunk.pending, (state) => {
+        state.userTabTodosStatus = "loading";
+        state.userTabTodosError = null;
+      })
+      .addCase(fetchUserTodosThunk.fulfilled, (state, action) => {
+        state.userTabTodosStatus = "succeeded";
+        state.userTodoItems = action.payload;
+      })
+      .addCase(fetchUserTodosThunk.rejected, (state, action) => {
+        state.userTabTodosStatus = "failed";
+        state.userTabTodosError = action.payload ?? {
+          message: "Неизвестная ошибка",
+        };
       });
   },
 });
 
-export const { changeStatusFilter, toggleTodo, addNewPost } = todoSlice.actions;
+export const { changeStatusFilter, toggleTodo, addNewPost, resetTodosTab } =
+  todoSlice.actions;
 
 export default todoSlice.reducer;
 
@@ -138,6 +169,31 @@ export const todosThunk = createAsyncThunk<
   }
 });
 
+export const fetchUserTodosThunk = createAsyncThunk<
+  Todo[],
+  userTodosArg,
+  { rejectValue: PostError }
+>("albums/fetchUserTodos", async ({ userId }, thunkAPI) => {
+  try {
+    await new Promise<void>((res) => setTimeout(() => res(), 1000));
+    const albumsData = await axios(
+      "https://jsonplaceholder.typicode.com/todos",
+      {
+        params: {
+          userId: userId,
+        },
+      },
+    );
+    return albumsData.data;
+  } catch (e: unknown) {
+    const errorMessage = e instanceof Error ? e.message : "Неизвестная ошибка";
+    return thunkAPI.rejectWithValue({
+      message: errorMessage,
+      status: axios.isAxiosError(e) ? e.response?.status : undefined,
+    });
+  }
+});
+
 export const updateTodo = createAsyncThunk<
   Todo,
   updateTodoArg,
@@ -149,7 +205,7 @@ export const updateTodo = createAsyncThunk<
       return true;
     }
     const updateTodo = await axios.patch(
-      `https://jsonplaceholder.typicode.com/todo/${id}`,
+      `https://jsonplaceholder.typicode.com/todos/${id}`,
       {
         completed: !completed,
       },

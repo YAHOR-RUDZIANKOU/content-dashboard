@@ -13,6 +13,10 @@ type CreatePostResponse = FetchCreatePostsArgs & {
   id: number;
 };
 
+type userPostArg = {
+  userId: string | undefined;
+};
+
 type FetchPostsArgs = {
   page: number;
   limit: number;
@@ -47,6 +51,10 @@ type initialType = {
   statusEditPost: "idle" | "loading" | "succeeded" | "failed";
   errorEditPost: PostError | null;
   editPost: CreatePostResponse[];
+
+  userTabPostsStatus: "idle" | "loading" | "succeeded" | "failed";
+  userTabPostsError: PostError | null;
+  userPostItems: Post[];
 };
 
 type AsyncThunk = {
@@ -73,6 +81,10 @@ const initialState: initialType = {
   statusEditPost: "idle",
   errorEditPost: null,
   editPost: [],
+
+  userTabPostsStatus: "idle",
+  userTabPostsError: null,
+  userPostItems: [],
 };
 
 const postSlice = createSlice({
@@ -192,6 +204,21 @@ const postSlice = createSlice({
         state.errorEditPost = action.payload ?? {
           message: "Неизвестная ошибка",
         };
+      })
+
+      .addCase(fetchUserPostsThunk.pending, (state) => {
+        state.userTabPostsStatus = "loading";
+        state.userTabPostsError = null;
+      })
+      .addCase(fetchUserPostsThunk.fulfilled, (state, action) => {
+        state.userTabPostsStatus = "succeeded";
+        state.userPostItems = action.payload;
+      })
+      .addCase(fetchUserPostsThunk.rejected, (state, action) => {
+        state.userTabPostsStatus = "failed";
+        state.userTabPostsError = action.payload ?? {
+          message: "Неизвестная ошибка",
+        };
       });
   },
 });
@@ -235,6 +262,31 @@ export const postThunk = createAsyncThunk<
     }
   },
 );
+
+export const fetchUserPostsThunk = createAsyncThunk<
+  Post[],
+  userPostArg,
+  { rejectValue: PostError }
+>("posts/fetchUserPosts", async ({ userId }, thunkAPI) => {
+  try {
+    await new Promise<void>((res) => setTimeout(() => res(), 1000));
+    const postData = await axios<Post[]>(
+      `https://jsonplaceholder.typicode.com/posts`,
+      {
+        params: {
+          userId: userId,
+        },
+      },
+    );
+    return postData.data;
+  } catch (e: unknown) {
+    const errorMessage = e instanceof Error ? e.message : "Неизвестная ошибка";
+    return thunkAPI.rejectWithValue({
+      message: errorMessage,
+      status: axios.isAxiosError(e) ? e.response?.status : undefined,
+    });
+  }
+});
 
 export const postDelete = createAsyncThunk<
   Post,

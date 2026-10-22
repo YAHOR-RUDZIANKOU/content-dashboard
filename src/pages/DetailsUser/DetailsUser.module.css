@@ -1,0 +1,143 @@
+.user__wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.header__active {
+  color: #5b61e5;
+}
+
+.header__wrapper {
+  padding: 20px;
+  border-bottom: 1px solid #eaeaea;
+  min-height: 65px;
+}
+
+.main__wrapper {
+  flex-grow: 1;
+  background-color: #f4f4f4;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.main__header {
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  background-color: white;
+  border-radius: 10px;
+  border: 1px solid #eaeaea;
+}
+
+.main__info {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.main__logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 75px;
+  height: 75px;
+  color: #5b61e5;
+  background-color: #f3f3ff;
+  border-radius: 50%;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.info__body {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 7px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.info__name {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111111;
+}
+
+.info__username {
+  font-size: 14px;
+  color: #8c8c8c;
+}
+
+.info__catchPhrase {
+  font-size: 15px;
+  font-style: italic;
+  color: #8c8c8c;
+}
+
+.info__footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer__item {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer__title {
+  color: #8c8c8c;
+}
+
+.footer__subtitle {
+  font-size: 15px;
+}
+
+.footer__link {
+  color: #5b61e5;
+}
+
+.map__link {
+  display: inline-block;
+  padding: 10px;
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+}
+
+.main__body {
+  background-color: white;
+  flex-grow: 1;
+  border-radius: 10px;
+  border: 1px solid #eaeaea;
+  display: flex;
+  flex-direction: column;
+}
+
+.main__title {
+  padding: 10px 15px 0px 15px;
+  background-color: rgb(244, 245, 247);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.main__title button {
+  color: #8c8c8c;
+  padding: 0px 11px 9px 11px;
+}
+
+.btn__active {
+  color: #5b61e5 !important;
+  border-bottom: 2px solid #5b61e5;
+  font-weight: 500;
+}
+
+.tabs__container {
+  flex-grow: 1;
+  height: calc(100vh - 345px);
+  overflow: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}

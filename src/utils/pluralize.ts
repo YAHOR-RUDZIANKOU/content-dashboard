@@ -12,3 +12,13 @@ const pluralize = (countComments: number, forms: string[]): string => {
 };
 
 export default pluralize;
+
+export const showIconsLogo = (userName: string | undefined) => {
+  if (userName) {
+    return userName
+      .split(" ")
+      .map((value) => value[0])
+      .join("")
+      .toUpperCase();
+  }
+};

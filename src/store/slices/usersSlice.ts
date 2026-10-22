@@ -3,6 +3,10 @@ import axios from "axios";
 import type { User } from "../../types/user";
 import type { RootState } from "../index";
 
+type FetchUserArgs = {
+  id: string | undefined;
+};
+
 type initialType = {
   items: User[];
   status: "idle" | "loading" | "succeeded" | "failed";
@@ -10,6 +14,10 @@ type initialType = {
   usersMap: Record<number, string>;
   searchStr: string;
   currentSort: "asc" | "desc";
+
+  currentUserStatus: "idle" | "loading" | "succeeded" | "failed";
+  currentUserError: string | null;
+  currentUser: User | null;
 };
 
 const initialState: initialType = {
@@ -19,6 +27,10 @@ const initialState: initialType = {
   usersMap: {},
   searchStr: "",
   currentSort: "asc",
+
+  currentUserStatus: "idle",
+  currentUserError: null,
+  currentUser: null,
 };
 
 const userSlice = createSlice({
@@ -38,7 +50,6 @@ const userSlice = createSlice({
         state.status = "loading";
         state.error = null;
       })
-
       .addCase(usersThunk.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.items = action.payload;
@@ -48,10 +59,22 @@ const userSlice = createSlice({
         });
         state.usersMap = userCurrent;
       })
-
       .addCase(usersThunk.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload ?? "Неизвестная ошибка";
+      })
+
+      .addCase(currentUsersThunk.pending, (state) => {
+        state.currentUserStatus = "loading";
+        state.currentUserError = null;
+      })
+      .addCase(currentUsersThunk.fulfilled, (state, action) => {
+        state.currentUserStatus = "succeeded";
+        state.currentUser = action.payload;
+      })
+      .addCase(currentUsersThunk.rejected, (state, action) => {
+        state.currentUserStatus = "failed";
+        state.currentUserError = action.payload ?? "Неизвестная ошибка";
       });
   },
 });
@@ -88,3 +111,19 @@ export const usersThunk = createAsyncThunk<
     },
   },
 );
+
+export const currentUsersThunk = createAsyncThunk<
+  User,
+  FetchUserArgs,
+  { rejectValue: string }
+>("currentUsers/fetchUsers", async ({ id }, thunkAPI) => {
+  try {
+    const usersData = await axios(
+      `https://jsonplaceholder.typicode.com/users/${id}`,
+    );
+    return usersData.data;
+  } catch (e: unknown) {
+    const errorMessage = e instanceof Error ? e.message : "Неизвестная ошибка";
+    return thunkAPI.rejectWithValue(errorMessage);
+  }
+});
