@@ -118,6 +118,7 @@ export const currentUsersThunk = createAsyncThunk<
   { rejectValue: string }
 >("currentUsers/fetchUsers", async ({ id }, thunkAPI) => {
   try {
+    await new Promise<void>((res) => setTimeout(() => res(), 1000));
     const usersData = await axios(
       `https://jsonplaceholder.typicode.com/users/${id}`,
     );

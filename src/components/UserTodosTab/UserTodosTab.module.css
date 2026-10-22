@@ -4,6 +4,7 @@
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #eaeaea;
+  flex-grow: 1;
 }
 
 .liElement__wrapper {
@@ -14,4 +15,22 @@
 
 .liElement__title {
   font-weight: 500;
+}
+
+.posTab__items {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.errorTab__wrapper {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.errorTab__inner {
+  width: 350px;
+  height: 350px;
+  margin-top: -50px;
 }
