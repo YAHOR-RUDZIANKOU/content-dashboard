@@ -13,6 +13,7 @@ import Albums from "../components/Albums/Albums";
 import AlbumPhotos from "../pages/AlbumPhotos/AlbumPhotos";
 import Users from "../pages/Users/Users";
 import DetailsUser from "../pages/DetailsUser/DetailsUser";
+import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
 
 const AppRouter = () => {
   return (
@@ -46,6 +47,7 @@ const AppRouter = () => {
           <Route path="/users" element={<Users />} />
           <Route path="/users/:id" element={<DetailsUser />} />
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   );
