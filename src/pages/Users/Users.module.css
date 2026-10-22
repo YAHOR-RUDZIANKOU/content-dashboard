@@ -17,6 +17,7 @@
   flex-direction: column;
   border: 1px solid #cccccc;
   border-radius: 10px;
+  flex-grow: 1;
 }
 
 .user__header {
@@ -75,7 +76,6 @@
   background-color: white;
   padding: 10px 15px;
   border-bottom: 1px solid #eaeaea;
-  
   flex-grow: 1;
   display: flex;
   align-items: center;
@@ -102,4 +102,23 @@
 
 .table__active {
   background-color: rgb(244, 245, 247);
+}
+
+.empty__wrapper {
+  flex-grow: 1;
+  margin: 50px auto;
+}
+
+.empty__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  padding: 15px;
+  background-color: #e2e8f0;
+  border-radius: 10px;
+}
+
+.empty__title {
+  font-weight: 500;
 }

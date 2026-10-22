@@ -26,7 +26,6 @@ const DetailsUserBio = () => {
   const currentUserStatus = useAppSelector(
     (state) => state.users.currentUserStatus,
   );
-  const errorUser = useAppSelector((state) => state.users.currentUserError);
   const userAlbumsItems = useAppSelector(
     (state) => state.albums.userAlbumItems,
   );

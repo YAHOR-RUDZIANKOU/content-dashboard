@@ -11,6 +11,7 @@ import searchUser from "../../store/slices/Selectors/selectFilteredUsers";
 import { Link, useNavigate } from "react-router-dom";
 import SkeletonCard from "../../components/Skeleton/SkeletonCard/SkeletonCard";
 import ErrorState from "../../components/ErrorState/ErrorState";
+import Button from "../../components/UI/Button/Button";
 
 const Users = () => {
   const status = useAppSelector((state) => state.users.status);
@@ -82,28 +83,46 @@ const Users = () => {
                   <span>Город</span>
                 </div>
               </li>
-              {resultUsers.map((value) => {
-                return (
-                  <li
-                    key={value.id}
-                    className={`${classes.table__items} ${currentId === value.id ? classes.table__active : ""}`}
-                  >
-                    <div className={classes.table__row}>
-                      <Link
-                        to={`/users/${value.id}`}
-                        className={classes.user__name}
+              {resultUsers.length ? (
+                <>
+                  {" "}
+                  {resultUsers.map((value) => {
+                    return (
+                      <li
+                        key={value.id}
+                        className={`${classes.table__items} ${currentId === value.id ? classes.table__active : ""}`}
                       >
-                        {value.name}
-                      </Link>
-                      <span>{value.username}</span>
-                      <span>{value.email}</span>
-                      <span>{value.phone}</span>
-                      <span>{value.company.name}</span>
-                      <span>{value.address.city}</span>
+                        <div className={classes.table__row}>
+                          <Link
+                            to={`/users/${value.id}`}
+                            className={classes.user__name}
+                          >
+                            {value.name}
+                          </Link>
+                          <span>{value.username}</span>
+                          <span>{value.email}</span>
+                          <span>{value.phone}</span>
+                          <span>{value.company.name}</span>
+                          <span>{value.address.city}</span>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </>
+              ) : (
+                <div className={classes.empty__wrapper}>
+                  <div className={classes.empty__inner}>
+                    <div className={classes.empty__title}>
+                      По вашему запросу ничего не найдено
                     </div>
-                  </li>
-                );
-              })}
+                    <div>
+                      <Button onClick={() => setValue("")} variant="primary">
+                        Сбросить фильтры
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </ul>
           </>
         )}
