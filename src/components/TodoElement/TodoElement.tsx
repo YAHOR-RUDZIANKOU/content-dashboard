@@ -7,6 +7,7 @@ import { toast } from "react-hot-toast";
 type handleToggleTypes = {
   id: number;
   completed: boolean;
+  userId: number;
 };
 
 type TodoElementProps = {
@@ -17,15 +18,20 @@ const TodoElement = ({ errorFlag }: TodoElementProps) => {
   const dispatch = useAppDispatch();
   const allAuths = useAppSelector((state) => state.users.items);
   const resultTodos = useAppSelector(todoSelectors);
+  const authId = useAppSelector((state) => state.auth.user?.id);
 
-  const handleToggle = async ({ id, completed }: handleToggleTypes) => {
-    dispatch(toggleTodo(id));
-    try {
-      await dispatch(updateTodo({ id, completed })).unwrap();
-    } catch (err) {
+  const handleToggle = async ({ id, completed, userId }: handleToggleTypes) => {
+    if (authId === userId) {
       dispatch(toggleTodo(id));
-      console.log(err);
-      toast.error(`Не удалось обновить задачу. Попробуйте пожалуйста еще раз!`);
+      try {
+        await dispatch(updateTodo({ id, completed })).unwrap();
+      } catch (err) {
+        dispatch(toggleTodo(id));
+        console.log(err);
+        toast.error(
+          `Не удалось обновить задачу. Попробуйте пожалуйста еще раз!`,
+        );
+      }
     }
   };
   return (
@@ -45,6 +51,7 @@ const TodoElement = ({ errorFlag }: TodoElementProps) => {
                   handleToggle({
                     id: liElement.id,
                     completed: liElement.completed,
+                    userId: liElement.userId,
                   })
                 }
                 type="checkbox"
